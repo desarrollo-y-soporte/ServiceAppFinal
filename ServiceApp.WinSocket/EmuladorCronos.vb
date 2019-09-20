@@ -12,9 +12,7 @@ Public Class EmuladorCronos
 
 #Region "Declaraion Private"
     Private _WSInfoCliente As New WSInfoCliente
-    'Private Clientes As New Hashtable() 'Aqui se guarda la informacion de todos los clientes conectados
     Private _Log As New Log
-    'Private _Analizar As Boolean
     Private _InicioLectura As Boolean
     Private _FinLectura As Boolean
     Private _Operacion As OperacionesEnum
