@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <tarjeta>
+    <Original>999</Original>
+    <Dimmep>1</Dimmep>
+    <Dummy>2</Dummy>
+    <ZKTeko>3</ZKTeko>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>8</Dimmep>
+    <Dummy>7</Dummy>
+    <ZKTeko>3</ZKTeko>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>13</Dummy>
+    <ZKTeko>20</ZKTeko>
+  </tarjeta>
+</root>

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3AA63A1-564C-4B1D-895C-C8C709231AEE}</ProjectGuid>
+    <ProjectGuid>{97D4F466-E5E7-467E-9558-73D115D6ACAA}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ServiceApp.Service</RootNamespace>
-    <AssemblyName>ServiceApp.Service</AssemblyName>
+    <RootNamespace>ServiceApp.WinSocket</RootNamespace>
+    <AssemblyName>ServiceApp.WinSocket</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -19,7 +19,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\bin\</OutputPath>
-    <DocumentationFile>ServiceApp.Service.xml</DocumentationFile>
+    <DocumentationFile>ServiceApp.WinSocket.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -28,7 +28,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ServiceApp.Service.xml</DocumentationFile>
+    <DocumentationFile>ServiceApp.WinSocket.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,7 +65,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceApp.vb" />
+    <Compile Include="EmuladorCronos.vb" />
+    <Compile Include="EmuladorCronosFactory.vb" />
+    <Compile Include="WSInfoCliente.vb" />
+    <Compile Include="WSServer.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -101,25 +105,29 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BIOIPRT\ServiceApp.BIOIPRT.vbproj">
+      <Project>{d76f635b-3f0a-4699-b29d-9eddcede5dee}</Project>
+      <Name>ServiceApp.BIOIPRT</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logueos\ServiceApp.Logueos.vbproj">
       <Project>{09a40060-5acd-4ba5-94f5-96c611831521}</Project>
       <Name>ServiceApp.Logueos</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Configuracion.EntidadesMDL\ServiceApp.Configuracion.EntidadesMDL.vbproj">
-      <Project>{f5dae9af-d984-497f-98a5-ffdb91faf284}</Project>
-      <Name>ServiceApp.Configuracion.EntidadesMDL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Configuracion.Entidades\ServiceApp.Configuracion.Entidades.vbproj">
-      <Project>{5516da28-0aa5-4529-abe0-abe03fbe2303}</Project>
-      <Name>ServiceApp.Configuracion.Entidades</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceApp.Definiciones\ServiceApp.Definiciones.vbproj">
       <Project>{672f1466-d114-4939-ad15-2cc9720fd7a7}</Project>
       <Name>ServiceApp.Definiciones</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.WinSocket\ServiceApp.WinSocket.vbproj">
-      <Project>{97d4f466-e5e7-467e-9558-73d115d6acaa}</Project>
-      <Name>ServiceApp.WinSocket</Name>
+    <ProjectReference Include="..\ServiceApp.Dummy\ServiceApp.Dummy.vbproj">
+      <Project>{cbb7e49f-6a35-4cad-b455-947edb7a7d0e}</Project>
+      <Name>ServiceApp.Dummy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceApp.Interface\ServiceApp.Interface.vbproj">
+      <Project>{e4598c31-ac9a-481f-bf93-b20de14f1dd1}</Project>
+      <Name>ServiceApp.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZKTeco\ServiceApp.ZKTeco.vbproj">
+      <Project>{84c88360-aeae-4fcf-9969-72e8c98a3192}</Project>
+      <Name>ServiceApp.ZKTeco</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

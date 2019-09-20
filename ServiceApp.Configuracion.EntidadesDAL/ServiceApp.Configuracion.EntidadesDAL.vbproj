@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3AA63A1-564C-4B1D-895C-C8C709231AEE}</ProjectGuid>
+    <ProjectGuid>{BA330932-BEF9-4E0C-9C8C-CD9B165A7248}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ServiceApp.Service</RootNamespace>
-    <AssemblyName>ServiceApp.Service</AssemblyName>
+    <RootNamespace>ServiceApp.Configuracion.EntidadesDAL</RootNamespace>
+    <AssemblyName>ServiceApp.Configuracion.EntidadesDAL</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -18,8 +18,8 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\bin\</OutputPath>
-    <DocumentationFile>ServiceApp.Service.xml</DocumentationFile>
+    <OutputPath>..\Bin\</OutputPath>
+    <DocumentationFile>ServiceApp.Configuracion.EntidadesDAL.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -28,7 +28,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ServiceApp.Service.xml</DocumentationFile>
+    <DocumentationFile>ServiceApp.Configuracion.EntidadesDAL.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -64,7 +64,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceApp.vb" />
+    <Compile Include="DatosServicioDAL.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -80,6 +80,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ServicioDAL.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -101,25 +102,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Logueos\ServiceApp.Logueos.vbproj">
-      <Project>{09a40060-5acd-4ba5-94f5-96c611831521}</Project>
-      <Name>ServiceApp.Logueos</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ServiceApp.Configuracion.EntidadesMDL\ServiceApp.Configuracion.EntidadesMDL.vbproj">
       <Project>{f5dae9af-d984-497f-98a5-ffdb91faf284}</Project>
       <Name>ServiceApp.Configuracion.EntidadesMDL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Configuracion.Entidades\ServiceApp.Configuracion.Entidades.vbproj">
-      <Project>{5516da28-0aa5-4529-abe0-abe03fbe2303}</Project>
-      <Name>ServiceApp.Configuracion.Entidades</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ServiceApp.Definiciones\ServiceApp.Definiciones.vbproj">
       <Project>{672f1466-d114-4939-ad15-2cc9720fd7a7}</Project>
       <Name>ServiceApp.Definiciones</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.WinSocket\ServiceApp.WinSocket.vbproj">
-      <Project>{97d4f466-e5e7-467e-9558-73d115d6acaa}</Project>
-      <Name>ServiceApp.WinSocket</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

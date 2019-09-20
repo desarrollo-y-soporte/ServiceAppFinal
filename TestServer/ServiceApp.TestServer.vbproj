@@ -4,31 +4,35 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3AA63A1-564C-4B1D-895C-C8C709231AEE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>ServiceApp.Service</RootNamespace>
-    <AssemblyName>ServiceApp.Service</AssemblyName>
+    <ProjectGuid>{906FF5E4-8E17-435C-B816-DB86B4E47C65}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ServiceApp.TestServer.My.MyApplication</StartupObject>
+    <RootNamespace>ServiceApp.TestServer</RootNamespace>
+    <AssemblyName>ServiceApp.TestServer</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Windows</MyType>
+    <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\bin\</OutputPath>
-    <DocumentationFile>ServiceApp.Service.xml</DocumentationFile>
+    <DocumentationFile>ServiceApp.TestServer.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ServiceApp.Service.xml</DocumentationFile>
+    <DocumentationFile>ServiceApp.TestServer.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -46,6 +50,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,13 +65,21 @@
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceApp.vb" />
+    <Compile Include="frmServer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServer.Designer.vb">
+      <DependentUpon>frmServer.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -82,6 +97,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmServer.resx">
+      <DependentUpon>frmServer.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -99,27 +117,16 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logueos\ServiceApp.Logueos.vbproj">
       <Project>{09a40060-5acd-4ba5-94f5-96c611831521}</Project>
       <Name>ServiceApp.Logueos</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Configuracion.EntidadesMDL\ServiceApp.Configuracion.EntidadesMDL.vbproj">
-      <Project>{f5dae9af-d984-497f-98a5-ffdb91faf284}</Project>
-      <Name>ServiceApp.Configuracion.EntidadesMDL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Configuracion.Entidades\ServiceApp.Configuracion.Entidades.vbproj">
-      <Project>{5516da28-0aa5-4529-abe0-abe03fbe2303}</Project>
-      <Name>ServiceApp.Configuracion.Entidades</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Definiciones\ServiceApp.Definiciones.vbproj">
-      <Project>{672f1466-d114-4939-ad15-2cc9720fd7a7}</Project>
-      <Name>ServiceApp.Definiciones</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.WinSocket\ServiceApp.WinSocket.vbproj">
-      <Project>{97d4f466-e5e7-467e-9558-73d115d6acaa}</Project>
-      <Name>ServiceApp.WinSocket</Name>
+    <ProjectReference Include="..\ServiceApp.Service\ServiceApp.Service.vbproj">
+      <Project>{d3aa63a1-564c-4b1d-895c-c8c709231aee}</Project>
+      <Name>ServiceApp.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
