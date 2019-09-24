@@ -56,10 +56,6 @@ Public Class BIOIPRT
         Throw New NotImplementedException()
     End Sub
 
-    Public Sub PedidoInicializacion() Implements IBackEnd.PedidoInicializacion
-        Throw New NotImplementedException()
-    End Sub
-
     Public Sub Conectar() Implements IBackEnd.Conectar
         Throw New NotImplementedException()
     End Sub
@@ -69,6 +65,10 @@ Public Class BIOIPRT
     End Sub
 
     Public Function CantidadFichadas() As Integer Implements IBackEnd.CantidadFichadas
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function FechaHoraUltInicializacion() As Date Implements IBackEnd.FechaHoraUltInicializacion
         Throw New NotImplementedException()
     End Function
 End Class

@@ -6,8 +6,9 @@
     InhabilitacionTotal = 6
     AltaTarjeta = 4
     BajaTarjeta = 5
-    'Inicializacion =
-    'SalidaRelay =
+    FichadaOnLine = 500
+    Inicializacion = 66
+    SalidaRelay = 700
     Conectar = 100
     Desconectar = 101
 

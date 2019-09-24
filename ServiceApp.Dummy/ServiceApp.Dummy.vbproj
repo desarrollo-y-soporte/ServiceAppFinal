@@ -106,6 +106,10 @@
       <Project>{09a40060-5acd-4ba5-94f5-96c611831521}</Project>
       <Name>ServiceApp.Logueos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServiceApp.Definiciones\ServiceApp.Definiciones.vbproj">
+      <Project>{672f1466-d114-4939-ad15-2cc9720fd7a7}</Project>
+      <Name>ServiceApp.Definiciones</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceApp.Interface\ServiceApp.Interface.vbproj">
       <Project>{e4598c31-ac9a-481f-bf93-b20de14f1dd1}</Project>
       <Name>ServiceApp.Interface</Name>

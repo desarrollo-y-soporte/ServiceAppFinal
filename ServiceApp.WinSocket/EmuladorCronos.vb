@@ -125,17 +125,25 @@ Public Class EmuladorCronos
                                 If Chr(Recibir(i)) = ChrW(2) And Not _InicioLectura Then
                                     _InicioLectura = True
                                 End If
+
                                 If Chr(Recibir(i)) = ChrW(82) And _InicioLectura Then
                                     j = i + 2
                                     '_Operacion = OperacionesEnum.CambioFechaHora
                                 End If
+
                                 If i = j Then
                                     Dim pAccion() As Byte = {Recibir(i)}
-                                    _Operacion = Encoding.ASCII.GetString(pAccion)
+                                    If Encoding.ASCII.GetString(pAccion) = "B" Then
+                                        _Operacion = 66
+                                    Else
+                                        _Operacion = Encoding.ASCII.GetString(pAccion)
+                                    End If
                                 End If
+
                                 If Chr(Recibir(i)) = ChrW(3) And _InicioLectura Then
                                     _FinLectura = True
                                 End If
+
                                 If _InicioLectura And _FinLectura Then
                                     .UltimosDatosRecibidos = Encoding.ASCII.GetString(Recibir)
 
@@ -211,10 +219,12 @@ Public Class EmuladorCronos
 
     Public Sub Accion(ByVal pDato As String)
         Select Case _Operacion
+            Case OperacionesEnum.Inicializacion
+                PedidoInicializacion()
             Case OperacionesEnum.Lectura
                 _EmuladorCronos.Lectura()
             Case OperacionesEnum.CambioFechaHora
-                _EmuladorCronos.CambioFechaHora(CDate(pDato))
+                CambioFechaHora(CDate(pDato))
             Case OperacionesEnum.Borrado
                 _EmuladorCronos.Borrado()
             Case OperacionesEnum.InhabilitacionTotal
@@ -227,6 +237,40 @@ Public Class EmuladorCronos
                 _Log.WriteLog("No se reconocio operacion a ejecutar.", TraceEventType.Information)
         End Select
     End Sub
+
+    Private Sub CambioFechaHora(ByVal pDato As Date)
+        Try
+            _EmuladorCronos.CambioFechaHora(CDate(pDato))
+            EnviarACK()
+        Catch ex As Exception
+            EnviarNACK()
+        End Try
+    End Sub
+
+    Private Sub PedidoInicializacion()
+        Dim pMensaje(17) As Byte
+
+        Dim pCantidad As Integer = _EmuladorCronos.CantidadFichadas()
+        Dim pFecha As Date = _EmuladorCronos.FechaHoraUltInicializacion()
+
+        pMensaje(0) = 2
+        Array.Copy(Encoding.ASCII.GetBytes(pFecha.ToString("yyMMddhhmm")), 0, pMensaje, 1, pFecha.ToString("yyMMddhhmm").Length)
+        Array.Copy(Encoding.ASCII.GetBytes(pCantidad.ToString("00000")), 0, pMensaje, 11, pFecha.ToString("00000").Length)
+        pMensaje(16) = 3
+        pMensaje(17) = CalcularXOR(pMensaje, 17)
+        _WSInfoCliente.Socket.Send(pMensaje)
+    End Sub
+
+    Public Function CalcularXOR(ByVal pMensaje As Byte(), ByVal pLargo As Integer) As Integer
+        Dim pResultado As Integer
+
+        pResultado = pMensaje(0)
+        For i As Integer = 0 To pLargo - 1
+            pResultado = pResultado Xor pMensaje(i)
+        Next
+
+        Return pResultado
+    End Function
 #End Region
 
 #Region "Ejecucion Eventos"
@@ -254,11 +298,47 @@ Public Class EmuladorCronos
         EnviarACK()
     End Sub
 
-    Private Sub _EmuladorCronos_FichadaOnlineEvent(pFecha As String, pId As String) Handles _EmuladorCronos.FichadaOnlineEvent
-        Dim pTarjeta As String = _Traductor.Buscar(pId)
+    Private Sub _EmuladorCronos_FichadaOnlineEvent(pFecha As Date, pId As String) Handles _EmuladorCronos.FichadaOnlineEvent
+        Dim pMensaje(22) As Byte
 
-        _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(pFecha + pTarjeta))
+        pMensaje(0) = 2
+        pMensaje(1) = 46
+        pMensaje(2) = 30
+        Array.Copy(Encoding.ASCII.GetBytes(pFecha.ToString("MMddhhmm")), 0, pMensaje, 3, pFecha.ToString("MMddhhmm").Length)
+        Array.Copy(Encoding.ASCII.GetBytes(String.Format("{0000000000}", pId)), 0, pMensaje, 11, String.Format("{0000000000}", pId).Length)
+        pMensaje(21) = 3
+        pMensaje(22) = CalcularXOR(pMensaje, 22)
+        _WSInfoCliente.Socket.Send(pMensaje)
     End Sub
+
+    'Private Sub _EmuladorCronos_PedidoInicializacionEvent(pMensaje As String) Handles _EmuladorCronos.PedidoInicializacionEvent
+    '    Dim pSpliteo() As String
+    '    Dim pMensajeCronos As String
+    '    pSpliteo = pMensaje.Split(",")
+
+    '    pMensajeCronos = "B0"
+    '    pMensajeCronos = pMensajeCronos + pSpliteo(1) + pSpliteo(2)
+    '    'pMensajeCronos = pMensajeCronos + CalcularXOR(Encoding.ASCII.GetBytes(pMensajeCronos)).ToString
+    '    _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(pMensajeCronos))
+
+    'End Sub
+
+    'Private Sub _EmuladorCronos_LecturaFichadaEvent(pMensaje As String) Handles _EmuladorCronos.LecturaFichadaEvent
+    '    Dim pSpliteo() As String
+    '    Dim pMensajeCronos As String
+    '    pSpliteo = pMensaje.Split(",")
+
+    '    pMensajeCronos = ""
+    '    pMensajeCronos = pMensajeCronos + "02"
+    '    pMensajeCronos = pMensajeCronos + "52"
+    '    pMensajeCronos = pMensajeCronos + "30"
+    '    pMensajeCronos = pMensajeCronos + "00"
+    '    pMensajeCronos = pMensajeCronos + pSpliteo(1) + pSpliteo(2)
+    '    pMensajeCronos = pMensajeCronos + "02"
+    '    'pMensajeCronos = pMensajeCronos + CalcularXOR(Encoding.ASCII.GetBytes(pMensajeCronos)).ToString
+    '    _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(pMensajeCronos))
+    'End Sub
+
 #End Region
 
 #Region "IDisposable Support"

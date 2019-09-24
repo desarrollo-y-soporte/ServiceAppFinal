@@ -1,6 +1,8 @@
 ﻿Imports System.Text
 Imports ServiceApp.Interface
 Imports ServiceApp.Logueos
+Imports ServiceApp.Definiciones
+Imports System.Threading
 
 Public Class Dummy
     Implements IDisposable, IBackEnd
@@ -9,6 +11,8 @@ Public Class Dummy
     Private _Port As Integer
     Private _IP As String
     Private _Conectado As Boolean
+    Private _Accion As BackendEnum
+    Private _Mensaje As String
 
     WithEvents _WSCliente As New WSCliente
     Public Event FichadaOnlineEvent As IBackEnd.FichadaOnlineEventEventHandler Implements IBackEnd.FichadaOnlineEvent
@@ -27,41 +31,46 @@ Public Class Dummy
 
 #Region "IBackEnd"
     Public Sub Lectura() Implements IBackEnd.Lectura
-        _WSCliente.EnviarDatos("Dummy - Lectura")
+        _WSCliente.EnviarDatos(CInt(OperacionesEnum.Lectura).ToString)
         _Log.WriteLog("Dummy - Lectura", TraceEventType.Information)
     End Sub
 
     Public Sub CambioFechaHora(pFecha As Date) Implements IBackEnd.CambioFechaHora
-        _WSCliente.EnviarDatos("Dummy - Cambio Fecha Hora")
+        _WSCliente.EnviarDatos(CInt(OperacionesEnum.CambioFechaHora).ToString)
         _Log.WriteLog("Dummy - Cambio Fecha Hora", TraceEventType.Information)
     End Sub
 
     Public Sub Borrado() Implements IBackEnd.Borrado
-        _WSCliente.EnviarDatos("Dummy - Borrado")
+        _WSCliente.EnviarDatos(CInt(OperacionesEnum.Borrado).ToString)
         _Log.WriteLog("Dummy - Borrado", TraceEventType.Information)
     End Sub
 
     Public Sub InhabilitacionTotal() Implements IBackEnd.InhabilitacionTotal
-        _WSCliente.EnviarDatos("Dummy - Inhabilitacion Total")
+        _WSCliente.EnviarDatos(CInt(OperacionesEnum.InhabilitacionTotal).ToString)
         _Log.WriteLog("Dummy - Inhabilitacion Total", TraceEventType.Information)
     End Sub
 
     Public Sub AltaTarjeta(pId As String) Implements IBackEnd.AltaTarjeta
-        _WSCliente.EnviarDatos("Dummy - Alta de Tarjeta")
+        _WSCliente.EnviarDatos(CInt(OperacionesEnum.AltaTarjeta).ToString)
         _Log.WriteLog("Dummy - Alta de Tarjeta", TraceEventType.Information)
     End Sub
 
     Public Sub BajaTarjeta(pId As String) Implements IBackEnd.BajaTarjeta
-        _WSCliente.EnviarDatos("Dummy - Baja de Tarjeta")
+        _WSCliente.EnviarDatos(CInt(OperacionesEnum.BajaTarjeta).ToString)
         _Log.WriteLog("Baja de Tarjeta", TraceEventType.Information)
     End Sub
 
-    Public Sub PedidoInicializacion() Implements IBackEnd.PedidoInicializacion
-        Throw New NotImplementedException()
-    End Sub
+    'Public Sub PedidoInicializacion() Implements IBackEnd.PedidoInicializacion
+    '    _WSCliente.EnviarDatos(CInt(OperacionesEnum.Inicializacion).ToString)
+    '    _Log.WriteLog("Baja de Tarjeta", TraceEventType.Information)
+    'End Sub
 
     Public Function CantidadFichadas() As Integer Implements IBackEnd.CantidadFichadas
-        Throw New NotImplementedException()
+        Return 20
+    End Function
+
+    Public Function FechaHoraUltInicializacion() As Date Implements IBackEnd.FechaHoraUltInicializacion
+        Return Date.Now
     End Function
 
     Public Sub IBackEnd_Conectar() Implements IBackEnd.Conectar
@@ -120,15 +129,22 @@ Public Class Dummy
         datos = datos.Replace(vbNullChar, "")
         Dim pMensaje As String = RTrim(LTrim(datos))
         pSpliteo = pMensaje.Split(",")
+        Dim pOperacion As OperacionesEnum
 
-        Select Case pSpliteo(0)
-            Case "1"
+        pOperacion = CInt(pSpliteo(0))
+        Select Case pOperacion
+            Case OperacionesEnum.FichadaOnLine
                 _Log.WriteLog("Fecha y Hora: " + pSpliteo(1), TraceEventType.Information)
                 _Log.WriteLog("Tarjeta: " + pSpliteo(2), TraceEventType.Information)
-                RaiseEvent FichadaOnlineEvent(pSpliteo(1), pSpliteo(2))
+                RaiseEvent FichadaOnlineEvent(CDate(pSpliteo(1)), pSpliteo(2))
+            Case OperacionesEnum.Inicializacion
+                'RaiseEvent PedidoInicializacionEvent(datos)
+            Case OperacionesEnum.Lectura
+                'RaiseEvent LecturaFichadaEvent(datos)
         End Select
 
     End Sub
+
 #End Region
 
 #Region "IDisposable Support"

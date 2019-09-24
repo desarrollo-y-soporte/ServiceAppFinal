@@ -42,6 +42,7 @@ Partial Class TestDummy
         Me.lblPuertoServer = New System.Windows.Forms.Label()
         Me.lblEquipo = New System.Windows.Forms.Label()
         Me.txtServerPort = New System.Windows.Forms.TextBox()
+        Me.lblFichadasEnMemoria = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -156,6 +157,7 @@ Partial Class TestDummy
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.lblFichadasEnMemoria)
         Me.GroupBox2.Controls.Add(Me.lblFechaHora)
         Me.GroupBox2.Controls.Add(Me.cmdDesconectarServer)
         Me.GroupBox2.Controls.Add(Me.cmdAccion)
@@ -178,7 +180,7 @@ Partial Class TestDummy
         '
         Me.lblFechaHora.Location = New System.Drawing.Point(6, 254)
         Me.lblFechaHora.Name = "lblFechaHora"
-        Me.lblFechaHora.Size = New System.Drawing.Size(132, 30)
+        Me.lblFechaHora.Size = New System.Drawing.Size(175, 30)
         Me.lblFechaHora.TabIndex = 10
         Me.lblFechaHora.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -234,6 +236,15 @@ Partial Class TestDummy
         Me.txtServerPort.Size = New System.Drawing.Size(100, 20)
         Me.txtServerPort.TabIndex = 4
         '
+        'lblFichadasEnMemoria
+        '
+        Me.lblFichadasEnMemoria.Location = New System.Drawing.Point(6, 211)
+        Me.lblFichadasEnMemoria.Name = "lblFichadasEnMemoria"
+        Me.lblFichadasEnMemoria.Size = New System.Drawing.Size(175, 23)
+        Me.lblFichadasEnMemoria.TabIndex = 11
+        Me.lblFichadasEnMemoria.Text = "Fichadas en Memoria"
+        Me.lblFichadasEnMemoria.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'TestDummy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -274,4 +285,5 @@ Partial Class TestDummy
     Friend WithEvents cboAcciones As ComboBox
     Friend WithEvents cmdDesconectarServer As Button
     Friend WithEvents lblFechaHora As Label
+    Friend WithEvents lblFichadasEnMemoria As Label
 End Class

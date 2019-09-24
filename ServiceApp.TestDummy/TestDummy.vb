@@ -1,12 +1,16 @@
 ﻿Imports System.ComponentModel
 Imports System.Net
 Imports ServiceApp.Dummy
+Imports ServiceApp.Definiciones
 
 Public Class TestDummy
 
     WithEvents WinSockServer As New WSServer
     WithEvents WinSockCliente As New WSCliente
     WithEvents pDummy As New Dummy.Dummy
+
+    Private _CantidadFichadas As Integer
+    Private _Accion As OperacionesEnum
 
 #Region "Cliente"
     Private Sub PrepararCliente()
@@ -99,6 +103,8 @@ Public Class TestDummy
 
     Private Sub SetearDefault()
         lblFechaHora.Text = Now
+        _CantidadFichadas = Me.GenRandomInt()
+        lblFichadasEnMemoria.Text = "Fichadas en Memoria: " + _CantidadFichadas.ToString
     End Sub
 #End Region
 
@@ -114,11 +120,7 @@ Public Class TestDummy
         'Envio el texto escrito en el textbox txtMensaje a todos los clientes
         Select Case cboAcciones.SelectedValue
             Case 1
-                Dim pDiaYHora As String
-                Dim pFichada As String
-                pDiaYHora = Now.ToString("yyMMddhhmmss")
-                pFichada = GenRandomInt.ToString
-                WinSockServer.EnviarDatos("1," + pDiaYHora + "," + pFichada)
+                WinSockServer.EnviarDatos(EnviarFichada)
         End Select
 
     End Sub
@@ -133,18 +135,50 @@ Public Class TestDummy
         'MsgBox("Nuevo mensaje desde el cliente de la IP= " & IDTerminal.Address.ToString & ",Puerto = " & IDTerminal.Port)
         'Muestro el mensaje recibido
         Dim pMensaje As String = WinSockServer.ObtenerDatos(IDTerminal)
-        Select Case pMensaje
-            Case "Dummy - Cambio Fecha Hora"
-                lblFechaHora.Text = Now()
-            Case Else
-                MsgBox(pMensaje)
-        End Select
+        Dim pDiaYHora As String = Now.ToString("yyMMddhhmmss")
+
+        If IsNumeric(pMensaje) Then
+            _Accion = CInt(pMensaje)
+            Select Case _Accion
+                Case OperacionesEnum.CambioFechaHora
+                    lblFechaHora.Text = Now()
+                Case OperacionesEnum.AltaTarjeta
+                Case OperacionesEnum.BajaTarjeta
+                Case OperacionesEnum.Borrado
+                Case OperacionesEnum.InhabilitacionTotal
+                Case OperacionesEnum.Inicializacion
+                    WinSockServer.EnviarDatos("66," + pDiaYHora + "," + _CantidadFichadas.ToString)
+                Case OperacionesEnum.Lectura
+                    For i As Integer = 0 To _CantidadFichadas - 1
+                        WinSockServer.EnviarDatos(EnviarFichada)
+                        Threading.Thread.Sleep(1000)
+                    Next
+                Case OperacionesEnum.SalidaRelay
+                Case Else
+                    MsgBox(pMensaje)
+            End Select
+        Else
+            MsgBox(pMensaje)
+        End If
+
     End Sub
 
     Private Sub WinSockServer_NuevaConexion(IDTerminal As IPEndPoint) Handles WinSockServer.NuevaConexion
         'Muestro quien se conecto
         'MsgBox("Se ha conectado un nuevo cliente desde la IP= " & IDTerminal.Address.ToString & ",Puerto = " & IDTerminal.Port)
     End Sub
+
+    Public Function EnviarFichada() As String
+        Dim pDiaYHora As String
+        Dim pFichada As String
+        Dim pMensaje As String
+        pDiaYHora = Now.ToString("yyMMddhhmmss")
+        pFichada = GenRandomInt.ToString
+
+        pMensaje = "0," + pDiaYHora + "," + pFichada
+
+        Return pMensaje
+    End Function
 
     Public Sub PrepararServer()
         With WinSockServer

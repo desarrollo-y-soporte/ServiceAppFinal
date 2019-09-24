@@ -9,7 +9,6 @@ Public Interface IBackEnd
     Sub InhabilitacionTotal()
     Sub AltaTarjeta(ByVal pId As String)
     Sub BajaTarjeta(ByVal pId As String)
-    Sub PedidoInicializacion()
 
     Sub Conectar()
     Sub Desconectar()
@@ -19,5 +18,6 @@ Public Interface IBackEnd
     Property Conectado As Boolean
 
     Function CantidadFichadas() As Integer
+    Function FechaHoraUltInicializacion() As Date
 
 End Interface
