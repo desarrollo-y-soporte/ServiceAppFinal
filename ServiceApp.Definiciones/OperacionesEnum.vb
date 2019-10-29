@@ -12,4 +12,6 @@
     Conectar = 100
     Desconectar = 101
 
+    ACK = 200
+    NACK = 300
 End Enum

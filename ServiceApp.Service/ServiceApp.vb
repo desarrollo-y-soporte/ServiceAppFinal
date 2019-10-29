@@ -12,25 +12,30 @@ Public Class ServiceApp
     Private _DatosServicio As New Dictionary(Of Integer, DatosServicioMDL)
 
     Public Sub New()
-        _Servicio = New Servicio
-        _Servicio.LoadFile()
-        _DatosServicio = _Servicio.DatosOtrosSistemasDic
+        Try
+            _Servicio = New Servicio
+            _Servicio.LoadFile()
+            _DatosServicio = _Servicio.DatosOtrosSistemasDic
 
 
-        If _DatosServicio.Count > 0 Then
-            ReDim Preserve _WinSocket(_DatosServicio.Count - 1)
-            For Each iKey As Integer In _DatosServicio.Keys
-                Dim pDatosOtrosSistemasMDL As DatosServicioMDL = _DatosServicio(iKey)
-                _WinSocket(iKey) = New WinSocket.WSServer
-                _WinSocket(iKey).IpAddressConnect = System.Net.IPAddress.Parse(pDatosOtrosSistemasMDL.IPServicio)
-                _WinSocket(iKey).Port = pDatosOtrosSistemasMDL.PuertoServicio
-                _WinSocket(iKey).IPRemoto = pDatosOtrosSistemasMDL.IPRemota
-                _WinSocket(iKey).PuertoRemoto = pDatosOtrosSistemasMDL.PuertoRemoto
-                _WinSocket(iKey).Sistema = pDatosOtrosSistemasMDL.Sistema
-                _Log.WriteLog("Iniciando Escucha para - " + _WinSocket(iKey).IpAddressConnect.ToString + ":" + _WinSocket(iKey).Port.ToString, TraceEventType.Information)
-                _WinSocket(iKey).Escuchar()
-            Next
-        End If
+            If _DatosServicio.Count > 0 Then
+                ReDim Preserve _WinSocket(_DatosServicio.Count - 1)
+                For Each iKey As Integer In _DatosServicio.Keys
+                    Dim pDatosOtrosSistemasMDL As DatosServicioMDL = _DatosServicio(iKey)
+                    _WinSocket(iKey) = New WinSocket.WSServer
+                    _WinSocket(iKey).IpAddressConnect = System.Net.IPAddress.Parse(pDatosOtrosSistemasMDL.IPServicio)
+                    _WinSocket(iKey).Port = pDatosOtrosSistemasMDL.PuertoServicio
+                    _WinSocket(iKey).IPRemoto = pDatosOtrosSistemasMDL.IPRemota
+                    _WinSocket(iKey).PuertoRemoto = pDatosOtrosSistemasMDL.PuertoRemoto
+                    _WinSocket(iKey).Sistema = pDatosOtrosSistemasMDL.Sistema
+                    _Log.WriteLog("Iniciando Escucha para - " + _WinSocket(iKey).IpAddressConnect.ToString + ":" + _WinSocket(iKey).Port.ToString, TraceEventType.Information)
+                    _WinSocket(iKey).Escuchar()
+                Next
+            End If
+        Catch ex As Exception
+            _Log.WriteLog("Error en ServiceApp.New - " + ex.Message.ToString, TraceEventType.Information)
+        End Try
+
 
     End Sub
 

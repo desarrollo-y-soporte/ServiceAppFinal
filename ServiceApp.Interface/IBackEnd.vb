@@ -1,9 +1,8 @@
 ﻿Imports ServiceApp
 Public Interface IBackEnd
 
-    Event FichadaOnlineEvent(ByVal pFecha As String, ByVal pId As String)
+    Event FichadaOnlineEvent(ByVal pFecha As String, ByVal pId As String, ByVal pTpMovimiento As String)
 
-    Sub Lectura()
     Sub CambioFechaHora(ByVal pFecha As Date)
     Sub Borrado()
     Sub InhabilitacionTotal()
@@ -19,5 +18,7 @@ Public Interface IBackEnd
 
     Function CantidadFichadas() As Integer
     Function FechaHoraUltInicializacion() As Date
+    Function Lectura() As String
+    Function PrepararLectura() As Boolean
 
 End Interface

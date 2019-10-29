@@ -41,12 +41,22 @@ Public MustInherit Class ServicioBase
 
 #Region "Metodos"
     Public Sub LoadFile()
-        _ServicioDAL.LoadFile(Me)
+        Try
+            _ServicioDAL.LoadFile(Me)
+        Catch ex As Exception
+            Throw New Exception("Error en ServicioBase.LoadFile - " + ex.Message.ToString)
+        End Try
+
     End Sub
 
     Public Overridable Sub SaveFile()
+        Try
+            _ServicioDAL.SaveFile(Me)
+        Catch ex As Exception
+            Throw New Exception("Error en ServicioBase.SaveFile - " + ex.Message.ToString)
+        End Try
 
-        _ServicioDAL.SaveFile(Me)
+
     End Sub
 #End Region
 

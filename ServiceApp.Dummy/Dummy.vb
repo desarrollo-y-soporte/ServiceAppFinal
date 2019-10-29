@@ -13,6 +13,7 @@ Public Class Dummy
     Private _Conectado As Boolean
     Private _Accion As BackendEnum
     Private _Mensaje As String
+    Private _CantidadFichadas As Integer
 
     WithEvents _WSCliente As New WSCliente
     Public Event FichadaOnlineEvent As IBackEnd.FichadaOnlineEventEventHandler Implements IBackEnd.FichadaOnlineEvent
@@ -20,9 +21,11 @@ Public Class Dummy
 #Region "New and Finalize"
     Public Sub New()
         _Conectado = False
+        _CantidadFichadas = 20
     End Sub
 
     Public Sub New(ByVal pIP As String, ByVal pPort As Integer)
+        Me.New()
         _IP = pIP
         _Port = pPort
         _Conectado = False
@@ -30,32 +33,59 @@ Public Class Dummy
 #End Region
 
 #Region "IBackEnd"
-    Public Sub Lectura() Implements IBackEnd.Lectura
-        _WSCliente.EnviarDatos(CInt(OperacionesEnum.Lectura).ToString)
+    Public Function Lectura() As String Implements IBackEnd.Lectura
+        IBackEnd_Conectar()
+        Dim pFichadas As New List(Of String)
+        pFichadas.Add("20190929000100" + ", 1")
+        pFichadas.Add("20190929000200" + ", 2")
+        pFichadas.Add("20190929000300" + ", 3")
+        pFichadas.Add("20190929000400" + ", 4")
+        pFichadas.Add("20190929000500" + ", 5")
+        pFichadas.Add("20190929000600" + ", 6")
+        pFichadas.Add("20190929000700" + ", 7")
+        pFichadas.Add("20190929000800" + ", 8")
+        pFichadas.Add("20190929000900" + ", 9")
+        pFichadas.Add("20190929001000" + ", 10")
+        pFichadas.Add("20190929001100" + ", 11")
+        pFichadas.Add("20190929001200" + ", 12")
+        pFichadas.Add("20190929001300" + ", 13")
+        pFichadas.Add("20190929001400" + ", 14")
+        pFichadas.Add("20190929001500" + ", 15")
+        pFichadas.Add("20190929001600" + ", 16")
+        pFichadas.Add("20190929001700" + ", 17")
+        pFichadas.Add("20190929001800" + ", 18")
+        pFichadas.Add("20190929001900" + ", 19")
+        pFichadas.Add("20190929002000" + ", 20")
         _Log.WriteLog("Dummy - Lectura", TraceEventType.Information)
-    End Sub
+        Return ""
+    End Function
 
     Public Sub CambioFechaHora(pFecha As Date) Implements IBackEnd.CambioFechaHora
+        IBackEnd_Conectar()
         _WSCliente.EnviarDatos(CInt(OperacionesEnum.CambioFechaHora).ToString)
         _Log.WriteLog("Dummy - Cambio Fecha Hora", TraceEventType.Information)
     End Sub
 
     Public Sub Borrado() Implements IBackEnd.Borrado
+        IBackEnd_Conectar()
         _WSCliente.EnviarDatos(CInt(OperacionesEnum.Borrado).ToString)
         _Log.WriteLog("Dummy - Borrado", TraceEventType.Information)
     End Sub
 
     Public Sub InhabilitacionTotal() Implements IBackEnd.InhabilitacionTotal
+        IBackEnd_Conectar()
         _WSCliente.EnviarDatos(CInt(OperacionesEnum.InhabilitacionTotal).ToString)
         _Log.WriteLog("Dummy - Inhabilitacion Total", TraceEventType.Information)
     End Sub
 
     Public Sub AltaTarjeta(pId As String) Implements IBackEnd.AltaTarjeta
+        IBackEnd_Conectar()
         _WSCliente.EnviarDatos(CInt(OperacionesEnum.AltaTarjeta).ToString)
         _Log.WriteLog("Dummy - Alta de Tarjeta", TraceEventType.Information)
     End Sub
 
     Public Sub BajaTarjeta(pId As String) Implements IBackEnd.BajaTarjeta
+        IBackEnd_Conectar()
         _WSCliente.EnviarDatos(CInt(OperacionesEnum.BajaTarjeta).ToString)
         _Log.WriteLog("Baja de Tarjeta", TraceEventType.Information)
     End Sub
@@ -66,20 +96,24 @@ Public Class Dummy
     'End Sub
 
     Public Function CantidadFichadas() As Integer Implements IBackEnd.CantidadFichadas
-        Return 20
+        IBackEnd_Conectar()
+        Return _CantidadFichadas
     End Function
 
     Public Function FechaHoraUltInicializacion() As Date Implements IBackEnd.FechaHoraUltInicializacion
+        IBackEnd_Conectar()
         Return Date.Now
     End Function
 
     Public Sub IBackEnd_Conectar() Implements IBackEnd.Conectar
-        With _WSCliente
-            .IP = _IP
-            .Port = _Port
-            .Conectar()
-        End With
-        _Conectado = True
+        If Not _Conectado Then
+            With _WSCliente
+                .IP = _IP
+                .Port = _Port
+                .Conectar()
+            End With
+            _Conectado = True
+        End If
     End Sub
 
     Public Sub IBackEnd_Desconectar() Implements IBackEnd.Desconectar
@@ -136,7 +170,7 @@ Public Class Dummy
             Case OperacionesEnum.FichadaOnLine
                 _Log.WriteLog("Fecha y Hora: " + pSpliteo(1), TraceEventType.Information)
                 _Log.WriteLog("Tarjeta: " + pSpliteo(2), TraceEventType.Information)
-                RaiseEvent FichadaOnlineEvent(CDate(pSpliteo(1)), pSpliteo(2))
+                RaiseEvent FichadaOnlineEvent(CDate(pSpliteo(1)), pSpliteo(2), "E")
             Case OperacionesEnum.Inicializacion
                 'RaiseEvent PedidoInicializacionEvent(datos)
             Case OperacionesEnum.Lectura
@@ -181,6 +215,10 @@ Public Class Dummy
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
+
+    Public Function PrepararLectura() As Boolean Implements IBackEnd.PrepararLectura
+        Throw New NotImplementedException()
+    End Function
 
 #End Region
 

@@ -3,19 +3,121 @@
   <tarjeta>
     <Original>999</Original>
     <Dimmep>1</Dimmep>
-    <Dummy>2</Dummy>
-    <ZKTeko>3</ZKTeko>
+    <Dummy>1</Dummy>
+    <ZKTeco>3</ZKTeco>
   </tarjeta>
   <tarjeta>
     <Original>888</Original>
     <Dimmep>8</Dimmep>
+    <Dummy>2</Dummy>
+    <ZKTeco>3</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>3</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>889</Original>
+    <Dimmep>21</Dimmep>
+    <Dummy>4</Dummy>
+    <ZKTeco>21</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>890</Original>
+    <Dimmep>22</Dimmep>
+    <Dummy>5</Dummy>
+    <ZKTeco>22</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>6</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
     <Dummy>7</Dummy>
-    <ZKTeko>3</ZKTeko>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>8</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>9</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>10</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>11</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>12</Dummy>
+    <ZKTeco>20</ZKTeco>
   </tarjeta>
   <tarjeta>
     <Original>888</Original>
     <Dimmep>20</Dimmep>
     <Dummy>13</Dummy>
-    <ZKTeko>20</ZKTeko>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>14</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>15</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>16</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>17</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>18</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>19</Dummy>
+    <ZKTeco>20</ZKTeco>
+  </tarjeta>
+  <tarjeta>
+    <Original>888</Original>
+    <Dimmep>20</Dimmep>
+    <Dummy>20</Dummy>
+    <ZKTeco>20</ZKTeco>
   </tarjeta>
 </root>

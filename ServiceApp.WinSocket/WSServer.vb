@@ -74,35 +74,48 @@ Public Class WSServer
 
 #Region "METODOS"
     Public Sub Escuchar()
-        _TcpListener = New TcpListener(_IpAddressConnect, _Port)
-        'Inicio la escucha
-        _TcpListener.Start()
-        'Creo un thread para que se quede escuchando la llegada de un cliente
-        _Thread = New Thread(AddressOf EsperarCliente)
-        _Thread.Start()
+        Try
+            _TcpListener = New TcpListener(_IpAddressConnect, _Port)
+            'Inicio la escucha
+            _TcpListener.Start()
+            'Creo un thread para que se quede escuchando la llegada de un cliente
+            _Thread = New Thread(AddressOf EsperarCliente)
+            If _Sistema = BackendEnum.Dimmep Then
+                _Thread.SetApartmentState(ApartmentState.STA)
+            End If
+
+            _Thread.Start()
+        Catch ex As Exception
+            Throw New Exception("Error en WSServer.Escuchar - " + ex.Message.ToString)
+        End Try
+
     End Sub
 
     Private Sub EsperarCliente()
-        With _WSInfoCliente
-            While True
-                'Cuando se recibe la conexion, guardo la informacion del cliente
-                'Guardo el Socket que utilizo para mantener la conexion con el cliente
-                .Socket = _TcpListener.AcceptSocket() 'Se queda esperando la conexion de un cliente
-                'Guardo el el RemoteEndPoint, que utilizo para identificar al cliente
-                'IDClienteActual = .Socket.RemoteEndPoint
-                'Creo un Thread para que se encargue de escuchar los mensaje del cliente
-                '.Thread = New Thread(AddressOf LeerSocket)
-                'Agrego la informacion del cliente al HashArray Clientes, donde esta la
-                'informacion de todos estos
-                'SyncLock Me
-                'Clientes.Add(IDClienteActual, InfoClienteActual)
-                'End SyncLock
-                'Genero el evento Nueva conexion
-                RaiseEvent NuevaConexion()
-                'Inicio el thread encargado de escuchar los mensajes del cliente
-                '.Thread.Start()
-            End While
-        End With
+        Try
+            With _WSInfoCliente
+                While True
+                    'Cuando se recibe la conexion, guardo la informacion del cliente
+                    'Guardo el Socket que utilizo para mantener la conexion con el cliente
+                    .Socket = _TcpListener.AcceptSocket() 'Se queda esperando la conexion de un cliente
+                    'Guardo el el RemoteEndPoint, que utilizo para identificar al cliente
+                    'IDClienteActual = .Socket.RemoteEndPoint
+                    'Creo un Thread para que se encargue de escuchar los mensaje del cliente
+                    '.Thread = New Thread(AddressOf LeerSocket)
+                    'Agrego la informacion del cliente al HashArray Clientes, donde esta la
+                    'informacion de todos estos
+                    'SyncLock Me
+                    'Clientes.Add(IDClienteActual, InfoClienteActual)
+                    'End SyncLock
+                    'Genero el evento Nueva conexion
+                    RaiseEvent NuevaConexion()
+                    'Inicio el thread encargado de escuchar los mensajes del cliente
+                    '.Thread.Start()
+                End While
+            End With
+        Catch ex As Exception
+            Throw New Exception("Error en WSServer.EsperarCliente - " + ex.Message.ToString)
+        End Try
     End Sub
 
 
@@ -115,12 +128,17 @@ Public Class WSServer
     End Sub
 
     Private Sub WSServer_NuevaConexion() Handles Me.NuevaConexion
-        _Log.WriteLog("Se conecto un nuevo cliente.", TraceEventType.Information)
+        Try
+            _Log.WriteLog("Se conecto un nuevo cliente.", TraceEventType.Information)
 
-        _Log.WriteLog("Escucha Iniciada. Esperando Informacion", TraceEventType.Information)
-        Dim pEmuladorCronos As New EmuladorCronos(_Sistema, _IPRemoto, _PuertoRemoto)
-        pEmuladorCronos.InfoDeUnCliente.Socket = _WSInfoCliente.Socket
-        pEmuladorCronos.Start()
+            _Log.WriteLog("Escucha Iniciada. Esperando Informacion", TraceEventType.Information)
+            Dim pEmuladorCronos As New EmuladorCronos(_Sistema, _IPRemoto, _PuertoRemoto)
+            pEmuladorCronos.InfoDeUnCliente.Socket = _WSInfoCliente.Socket
+            pEmuladorCronos.Start()
+        Catch ex As Exception
+            Throw New Exception("Error en WSServer_NuevaConexion.NuevaConexion - " + ex.Message.ToString)
+        End Try
+
     End Sub
 
 #End Region

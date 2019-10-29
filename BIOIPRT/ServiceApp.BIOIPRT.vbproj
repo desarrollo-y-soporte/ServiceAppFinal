@@ -139,6 +139,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Logueos\ServiceApp.Logueos.vbproj">
+      <Project>{09a40060-5acd-4ba5-94f5-96c611831521}</Project>
+      <Name>ServiceApp.Logueos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceApp.Interface\ServiceApp.Interface.vbproj">
       <Project>{e4598c31-ac9a-481f-bf93-b20de14f1dd1}</Project>
       <Name>ServiceApp.Interface</Name>
