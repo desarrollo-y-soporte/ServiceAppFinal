@@ -209,7 +209,7 @@ Public Class ZKTeco
         pFichadas = ""
 
         If _IsConnected Then
-            'axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, False)
+            axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, False)
             'Dim dt_log As DataTable
 
             'If axCZKEM1.GetGeneralLogData(axCZKEM1.MachineNumber, dwTMachineNumber, dwEnrollNumber, dwEMachineNumber, idwVerifyMode, idwInOutMode, idwYear, idwMonth, idwDay, idwHour, idwMinute) Then
@@ -224,7 +224,7 @@ Public Class ZKTeco
             Else
                 pFichadas = ""
             End If
-            'axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, True)
+            axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, True)
         End If
         Return pFichadas
     End Function
@@ -347,13 +347,13 @@ Public Class ZKTeco
         Dim oReturn As Boolean
         oReturn = False
         If _IsConnected Then
-            'axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, False)
+            axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, False)
             If axCZKEM1.ReadGeneralLogData(axCZKEM1.MachineNumber) Then
                 oReturn = True
             Else
                 oReturn = False
             End If
-            'axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, True)
+            axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, True)
         End If
         Return oReturn
     End Function

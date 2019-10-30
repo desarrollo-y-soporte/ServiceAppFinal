@@ -8,7 +8,7 @@ Public Class Traductor
     Private _DataSet As DataSet
     Private _DataTable As DataTable
     Private _Sistemas As BackendEnum
-    Private _TraductorMDL As New Dictionary(Of Integer, TraductorMDL)
+    Private _TraductorMDL As New List(Of TraductorMDL)
 
 
 #Region "New and Finalize"
@@ -105,11 +105,11 @@ Public Class Traductor
         End Set
     End Property
 
-    Public Property TraductorMDL As Dictionary(Of Integer, TraductorMDL)
+    Public Property TraductorMDL As List(Of TraductorMDL)
         Get
             Return _TraductorMDL
         End Get
-        Set(value As Dictionary(Of Integer, TraductorMDL))
+        Set(value As List(Of TraductorMDL))
             _TraductorMDL = value
         End Set
     End Property
@@ -134,10 +134,10 @@ Public Class Traductor
             iKey = 0
             For Each pRow As DataRow In _DataTable.Rows
                 Try
-                    _TraductorMDL.Add(iKey, New TraductorMDL With {.Original = _DataTable.Rows(iKey).Item("Original").ToString, .Dimmep = _DataTable.Rows(iKey).Item("Dimmep").ToString,
+                    _TraductorMDL.Add(New TraductorMDL With {.Original = _DataTable.Rows(iKey).Item("Original").ToString, .Dimmep = _DataTable.Rows(iKey).Item("Dimmep").ToString,
                                       .Dummy = _DataTable.Rows(iKey).Item("Dummy").ToString, .ZKTeco = _DataTable.Rows(iKey).Item("ZKTeco").ToString})
                 Catch ex As Exception
-                    _TraductorMDL.Add(iKey, New TraductorMDL With {.Original = String.Empty, .Dimmep = String.Empty, .Dummy = String.Empty, .ZKTeco = String.Empty})
+                    _TraductorMDL.Add(New TraductorMDL With {.Original = String.Empty, .Dimmep = String.Empty, .Dummy = String.Empty, .ZKTeco = String.Empty})
                 End Try
                 iKey = iKey + 1
             Next
@@ -157,33 +157,34 @@ Public Class Traductor
         Dim pTraductorMDL As New TraductorMDL
 
         pValor = ""
+        pBuscar = pBuscar.Trim()
         Select Case _Sistemas
             Case BackendEnum.Dimmep
-                If _TraductorMDL.Where(Function(x) x.Value.Dimmep.Equals(pBuscar)).Count > 0 Then
-                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Value.Dimmep.Equals(pBuscar))
+                If _TraductorMDL.Where(Function(x) x.Dimmep.Equals(pBuscar)).Count > 0 Then
+                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Dimmep.Equals(pBuscar)).FirstOrDefault
                     pValor = pTraductorMDL.Original
                 Else
                     pValor = pBuscar
                 End If
 
             Case BackendEnum.Dummy
-                If _TraductorMDL.Where(Function(x) x.Value.Dummy.Equals(pBuscar)).Count > 0 Then
-                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Value.Dummy.Equals(pBuscar))
+                If _TraductorMDL.Where(Function(x) x.Dummy.Equals(pBuscar)).Count > 0 Then
+                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Dummy.Equals(pBuscar)).FirstOrDefault
                     pValor = pTraductorMDL.Original
                 Else
                     pValor = pBuscar
                 End If
 
             Case BackendEnum.ZKTeco
-                If _TraductorMDL.Where(Function(x) x.Value.ZKTeco.Equals(pBuscar)).Count > 0 Then
-                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Value.ZKTeco.Equals(pBuscar))
+                If _TraductorMDL.Where(Function(x) x.ZKTeco.Equals(pBuscar)).Count > 0 Then
+                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.ZKTeco.Equals(pBuscar)).FirstOrDefault
                     pValor = pTraductorMDL.Original
                 Else
                     pValor = pBuscar
                 End If
             Case BackendEnum.SistemaCentral
-                If _TraductorMDL.Where(Function(x) x.Value.Original.Equals(pBuscar)).Count > 0 Then
-                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Value.Original.Equals(pBuscar))
+                If _TraductorMDL.Where(Function(x) x.Original.Equals(pBuscar)).Count > 0 Then
+                    pTraductorMDL = _TraductorMDL.Where(Function(x) x.Original.Equals(pBuscar)).FirstOrDefault
                     pValor = pTraductorMDL.Original
                 Else
                     pValor = pBuscar
@@ -191,7 +192,28 @@ Public Class Traductor
 
         End Select
 
-        Return pValor
+        Return FormatId(pValor)
+    End Function
+
+    Public Function FormatId(ByVal pValor As String, Optional ByVal pTotalDigitos As Integer = 10) As String
+        Dim pRetorno As String
+        Dim i As Integer
+        Dim pFormato As String
+
+        Try
+            pRetorno = pValor
+
+            pValor = Trim(pValor) 'Trim quita los espacion en blanco
+            pFormato = "0"
+            For i = 1 To pTotalDigitos
+                pFormato = pFormato & "0"
+            Next i
+            pRetorno = Mid(pFormato, 1, pTotalDigitos - Len(pValor)) & pValor
+        Catch ex As Exception
+            pRetorno = pValor
+        End Try
+
+        Return pRetorno
     End Function
 #End Region
 End Class

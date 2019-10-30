@@ -188,7 +188,7 @@ Public Class EmuladorCronos
 
             End With
         Catch ex As Exception
-            Throw New Exception("Error en EmuladorCronos.LeerSocket - " + ex.Message.ToString)
+            _Log.WriteLog("Error en EmuladorCronos.LeerSocket - " + ex.Message.ToString, TraceEventType.Information)
         End Try
 
     End Sub
@@ -330,8 +330,8 @@ Public Class EmuladorCronos
 
         If pListaFichadas <> "" Then
             Dim pSplit() As String = pListaFichadas.Split(",")
-
-            Dim pDiaHora As Date = DateTime.ParseExact(pSplit(0), "yyyyMMddHHmmss", CultureInfo.InvariantCulture)
+            Dim pDiaHora As New Date(CInt(pSplit(0).Substring(0, 4)), CInt(pSplit(0).Substring(4, 2)), CInt(pSplit(0).Substring(6, 2)), CInt(pSplit(0).Substring(8, 2)), CInt(pSplit(0).Substring(10, 2)), 0)
+            'Dim pDiaHora As Date = DateTime.ParseExact(pSplit(0), "yyyyMMddHHmmss", CultureInfo.InvariantCulture)
             _IBackEnd_FichadaOnlineEvent(pDiaHora, pSplit(1), "E")
 
             _FichadasEnMemoria = _FichadasEnMemoria + 1
