@@ -93,7 +93,7 @@ Public Class ZKTeco
 
     Public Sub Disconnect()
         If _IsConnected Then
-            RegistrarEventosOnLine()
+            DesregistrarEventosOnLine()
             axCZKEM1.Disconnect()
             _IsConnected = False
         End If
@@ -111,7 +111,6 @@ Public Class ZKTeco
             If (axCZKEM1.SetDeviceTime2(axCZKEM1.MachineNumber, idwYear, idwMonth, idwDay, idwHour, idwMinute, idwSecond)) Then
                 axCZKEM1.RefreshData(axCZKEM1.MachineNumber)
                 axCZKEM1.GetDeviceTime(axCZKEM1.MachineNumber, idwYear, idwMonth, idwDay, idwHour, idwMinute, idwSecond)
-                Debug.Print("stop")
             Else
                 axCZKEM1.GetLastError(idwErrorCode)
                 Throw New Exception("Error" + idwErrorCode.ToString)
@@ -136,18 +135,18 @@ Public Class ZKTeco
     Public Sub AltaTarjeta(pId As String) Implements IBackEnd.AltaTarjeta
         If _IsConnected Then
             Dim idwErrorCode As Integer = Nothing
-            Dim sdwEnrollNumber As String = Nothing
-            Dim sName As String = Nothing
-            Dim sPassword As String = Nothing
-            Dim iPrivilege As Integer = Nothing
-            Dim bEnabled As Boolean = Nothing
+            Dim sdwEnrollNumber As String = pId
+            Dim sName As String = "Desde Servicio"
+            Dim sPassword As String = ""
+            Dim iPrivilege As Integer = 0
+            Dim bEnabled As Boolean = True
 
             axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, False)
             axCZKEM1.SetStrCardNumber(pId)
 
             If axCZKEM1.SSR_SetUserInfo(axCZKEM1.MachineNumber, sdwEnrollNumber, sName, sPassword, iPrivilege, bEnabled) Then
                 'lblOutputInfo.Items.Add("Set user information successfully")
-                _Log.WriteLog("Informacion enviada con exito", TraceEventType.Information)
+                _Log.WriteLog("Se agrego un nuevo usuario N" & sdwEnrollNumber, TraceEventType.Information)
             Else
 
                 axCZKEM1.GetLastError(idwErrorCode)
@@ -162,7 +161,28 @@ Public Class ZKTeco
 
     Public Sub BajaTarjeta(pId As String) Implements IBackEnd.BajaTarjeta
         If _IsConnected Then
+            Dim idwErrorCode As Integer = Nothing
+            Dim sdwEnrollNumber As String = pId
+            Dim sName As String = "Desde Servicio"
+            Dim sPassword As String = ""
+            Dim iPrivilege As Integer = 0
+            Dim bEnabled As Boolean = False
 
+            axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, False)
+            axCZKEM1.SetStrCardNumber(pId)
+
+            If axCZKEM1.SSR_SetUserInfo(axCZKEM1.MachineNumber, sdwEnrollNumber, sName, sPassword, iPrivilege, bEnabled) Then
+                'lblOutputInfo.Items.Add("Set user information successfully")
+                _Log.WriteLog("Se dio de baja al usuario N" & sdwEnrollNumber, TraceEventType.Information)
+            Else
+
+                axCZKEM1.GetLastError(idwErrorCode)
+                'lblOutputInfo.Items.Add("*Operation failed,ErrorCode=" & idwErrorCode.ToString())
+                _Log.WriteLog("*Operacion Erronea,ErrorCode=" & idwErrorCode.ToString(), TraceEventType.Information)
+            End If
+
+            axCZKEM1.RefreshData(axCZKEM1.MachineNumber)
+            axCZKEM1.EnableDevice(axCZKEM1.MachineNumber, True)
         End If
     End Sub
 

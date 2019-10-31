@@ -82,11 +82,10 @@ Public Class BIOIPRT
         Try
             Desconectar()
             AxBIO_IP_RT1.InicializarComponente(16, BIO_IP_RealTime.TipoVerificador.Sem_Dígito_Verificador, BIO_IP_RealTime.TipoCriptografia.Normal)
-            AxBIO_IP_RT1.AdicionaRelogio(_Reloj, _IP, 10, 15, 8, 0, 1, 1)
+            AxBIO_IP_RT1.AdicionaRelogio(_Reloj, _IP, 20, 15, 8, 0, 1, 1)
             AxBIO_IP_RT1.ConectarRelogio(_Reloj)
             AxBIO_IP_RT1.Status(_Reloj)
 
-            _IsConnected = True
         Catch ex As Exception
             Throw New Exception(ex.Message)
             _IsConnected = False
@@ -121,20 +120,29 @@ Public Class BIOIPRT
 
     Private Sub AxBIO_IP_RT1_RegistroRecolhido(sender As Object, e As __BIO_IP_RT_RegistroRecolhidoEvent) Handles AxBIO_IP_RT1.RegistroRecolhido
         Try
-            Dim pFecha As Date
-            Dim pHora As Date
+            Dim pFecha As New Date(CInt(e.data.Substring(4, 2)), CInt(e.data.Substring(2, 2)), CInt(e.data.Substring(0, 2)), CInt(e.hora.Substring(0, 2)), CInt(e.hora.Substring(2, 2)), 0)
             Dim pFechaHora As Date
 
-            pFecha = CDate(e.data)
-            pHora = CDate(e.hora)
+            'pFecha = CDate(e.data)
+            'pHora = CDate(e.hora)
             pFechaHora = _Fecha.AddHours(_Hora.Hour).AddMinutes(_Hora.Minute).AddSeconds(_Hora.Second)
 
-            pFichadas.Add(pFechaHora.ToString("yyyyMMddhhmmss") + "," + e.matricula.ToString)
+            pFichadas.Add(pFecha.ToString("yyyyMMddhhmmss") + "," + e.matricula.ToString)
 
             AxBIO_IP_RT1.RegistroGravado(_Reloj)
         Catch ex As Exception
             Throw New Exception(ex.Message)
         End Try
+    End Sub
+
+    Private Sub AxBIO_IP_RT1_Conectado(sender As Object, e As __BIO_IP_RT_ConectadoEvent) Handles AxBIO_IP_RT1.Conectado
+        _Log.WriteLog("Se ha Conectado a: " + e.numero_Relogio.ToString, TraceEventType.Information)
+        _IsConnected = True
+        AxBIO_IP_RT1.StatusComunicacao(_Reloj)
+    End Sub
+
+    Private Sub AxBIO_IP_RT1_ConcluidoStatusComunicacao(sender As Object, e As __BIO_IP_RT_ConcluidoStatusComunicacaoEvent) Handles AxBIO_IP_RT1.ConcluidoStatusComunicacao
+        AxBIO_IP_RT1.Status(_Reloj)
     End Sub
 
     Public Function CantidadFichadas() As Integer Implements IBackEnd.CantidadFichadas
