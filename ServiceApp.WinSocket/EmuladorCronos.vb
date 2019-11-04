@@ -247,6 +247,7 @@ Public Class EmuladorCronos
         Try
             Select Case _Operacion
                 Case OperacionesEnum.Inicializacion
+
                     PedidoInicializacion()
                 Case OperacionesEnum.Lectura
                     If Not _ModoLecturaFichadas Then
