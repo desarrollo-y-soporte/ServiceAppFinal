@@ -7,6 +7,8 @@ Imports ServiceApp.Logueos
 Imports System.Net
 Imports ServiceApp.Interface
 Imports System.Globalization
+Imports System.Windows.Forms
+Imports ServiceApp.BIOIPRT
 
 Public Class EmuladorCronos
     Implements IDisposable
@@ -24,6 +26,8 @@ Public Class EmuladorCronos
     Private _FichadasEnMemoria As Integer
     Private _ModoLecturaFichadas As Boolean
     Private _ModoFinLecturaFichadas As Boolean
+    Private _Form As BIOIPRT.BIOIPRT
+
 #End Region
 
 #Region "Declaracion BackEnd"
@@ -50,13 +54,14 @@ Public Class EmuladorCronos
         _ModoFinLecturaFichadas = False
     End Sub
 
-    Public Sub New(ByVal pSistema As BackendEnum, ByVal pIP As String, ByVal pPort As Integer)
+    Public Sub New(ByVal pSistema As BackendEnum, ByVal pIP As String, ByVal pPort As Integer, ByVal pForm As BIOIPRT.BIOIPRT)
         Me.New()
         _Sistema = pSistema
         _IPCliente = pIP
         _PortCliente = pPort
+        _Form = pForm
         Dim pEmuladorCronosFactory As EmuladorCronosFactory = New EmuladorCronosFactory()
-        _IBackEnd = pEmuladorCronosFactory.CreateInstance(_Sistema)
+        _IBackEnd = pEmuladorCronosFactory.CreateInstance(_Sistema, pForm)
         _Traductor = New Traductor(CInt(_Sistema))
     End Sub
 
@@ -103,6 +108,15 @@ Public Class EmuladorCronos
         End Get
         Set(value As Integer)
             _PortCliente = value
+        End Set
+    End Property
+
+    Public Property Form As BIOIPRT.BIOIPRT
+        Get
+            Return _Form
+        End Get
+        Set(value As BIOIPRT.BIOIPRT)
+            _Form = value
         End Set
     End Property
 #End Region
@@ -360,11 +374,14 @@ Public Class EmuladorCronos
             _ModoLecturaFichadas = False
             _IBackEnd.IP = _IPCliente
             _IBackEnd.Port = _PortCliente
+
             If _IBackEnd.Conectado Then
                 _IBackEnd.Desconectar()
             End If
+
             _IBackEnd.Conectar()
         Catch ex As Exception
+            _IBackEnd = Nothing
             Throw New Exception("Error en EmuladorCronos_NuevaConexion.NuevaConexion - " + ex.Message.ToString)
         End Try
     End Sub

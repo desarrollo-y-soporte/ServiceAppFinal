@@ -2,16 +2,17 @@
 Imports ServiceApp.BIOIPRT
 Imports ServiceApp.Dummy
 Imports ServiceApp.ZKTeco
+Imports ServiceApp.Interop
 Imports ServiceApp.Definiciones
 
 Public Class EmuladorCronosFactory
-    Public Function CreateInstance(ByVal TipoEmulador As BackendEnum) As IBackEnd
+    Public Function CreateInstance(ByVal TipoEmulador As BackendEnum, ByVal Form As BIOIPRT.BIOIPRT) As IBackEnd
         Dim pResultado As IBackEnd
         Select Case TipoEmulador
             Case BackendEnum.Dummy
                 pResultado = New ServiceApp.Dummy.Dummy
             Case BackendEnum.Dimmep
-                pResultado = New ServiceApp.BIOIPRT.BIOIPRT()
+                pResultado = New ServiceApp.Interop.BIOIPRTClass(Form)
             Case BackendEnum.ZKTeco
                 pResultado = New ServiceApp.ZKTeco.ZKTeco()
             Case Else

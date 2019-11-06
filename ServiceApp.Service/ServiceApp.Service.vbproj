@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -101,6 +102,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BIOIPRT\ServiceApp.BIOIPRT.vbproj">
+      <Project>{d76f635b-3f0a-4699-b29d-9eddcede5dee}</Project>
+      <Name>ServiceApp.BIOIPRT</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logueos\ServiceApp.Logueos.vbproj">
       <Project>{09a40060-5acd-4ba5-94f5-96c611831521}</Project>
       <Name>ServiceApp.Logueos</Name>

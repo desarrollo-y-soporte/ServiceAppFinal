@@ -45,6 +45,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceApp.Configuracion.En
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceApp.Configuracion.EntidadesMDL", "ServiceApp.Configuracion.EntidadesMDL\ServiceApp.Configuracion.EntidadesMDL.vbproj", "{F5DAE9AF-D984-497F-98A5-FFDB91FAF284}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceApp.Interop", "ServiceApp.Interop\ServiceApp.Interop.vbproj", "{F540600E-0669-43AE-B040-B5849B6AA1C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{F5DAE9AF-D984-497F-98A5-FFDB91FAF284}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5DAE9AF-D984-497F-98A5-FFDB91FAF284}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5DAE9AF-D984-497F-98A5-FFDB91FAF284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{5516DA28-0AA5-4529-ABE0-ABE03FBE2303} = {59D4618B-102A-4EE3-B847-0D797ACDC268}
 		{BA330932-BEF9-4E0C-9C8C-CD9B165A7248} = {59D4618B-102A-4EE3-B847-0D797ACDC268}
 		{F5DAE9AF-D984-497F-98A5-FFDB91FAF284} = {59D4618B-102A-4EE3-B847-0D797ACDC268}
+		{F540600E-0669-43AE-B040-B5849B6AA1C5} = {AC85F4C5-BD14-4861-AC79-7BB17CCE1096}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4F736B6-B36E-401C-AE8B-43E53CFCF8C5}

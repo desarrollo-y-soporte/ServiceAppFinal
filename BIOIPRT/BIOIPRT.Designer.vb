@@ -23,10 +23,38 @@ Partial Class BIOIPRT
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(BIOIPRT))
+        Me.cmdConectar = New System.Windows.Forms.Button()
+        Me.txtIP = New System.Windows.Forms.TextBox()
+        Me.cmdListado = New System.Windows.Forms.Button()
         Me.AxBIO_IP_RT2 = New AxBIO_IP_RealTime.AxBIO_IP_RT()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.cmdTest = New System.Windows.Forms.Button()
         CType(Me.AxBIO_IP_RT2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'cmdConectar
+        '
+        Me.cmdConectar.Location = New System.Drawing.Point(197, 39)
+        Me.cmdConectar.Name = "cmdConectar"
+        Me.cmdConectar.Size = New System.Drawing.Size(75, 23)
+        Me.cmdConectar.TabIndex = 1
+        Me.cmdConectar.Text = "Conectar"
+        Me.cmdConectar.UseVisualStyleBackColor = True
+        '
+        'txtIP
+        '
+        Me.txtIP.Location = New System.Drawing.Point(68, 12)
+        Me.txtIP.Name = "txtIP"
+        Me.txtIP.Size = New System.Drawing.Size(204, 20)
+        Me.txtIP.TabIndex = 2
+        '
+        'cmdListado
+        '
+        Me.cmdListado.Location = New System.Drawing.Point(197, 68)
+        Me.cmdListado.Name = "cmdListado"
+        Me.cmdListado.Size = New System.Drawing.Size(75, 23)
+        Me.cmdListado.TabIndex = 3
+        Me.cmdListado.Text = "Listado"
+        Me.cmdListado.UseVisualStyleBackColor = True
         '
         'AxBIO_IP_RT2
         '
@@ -37,28 +65,35 @@ Partial Class BIOIPRT
         Me.AxBIO_IP_RT2.Size = New System.Drawing.Size(32, 32)
         Me.AxBIO_IP_RT2.TabIndex = 0
         '
-        'Button1
+        'cmdTest
         '
-        Me.Button1.Location = New System.Drawing.Point(197, 12)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 1
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.cmdTest.Location = New System.Drawing.Point(116, 68)
+        Me.cmdTest.Name = "cmdTest"
+        Me.cmdTest.Size = New System.Drawing.Size(75, 23)
+        Me.cmdTest.TabIndex = 4
+        Me.cmdTest.Text = "Test"
+        Me.cmdTest.UseVisualStyleBackColor = True
         '
         'BIOIPRT
         '
-        Me.ClientSize = New System.Drawing.Size(284, 54)
-        Me.Controls.Add(Me.Button1)
+        Me.ClientSize = New System.Drawing.Size(284, 101)
+        Me.Controls.Add(Me.cmdTest)
+        Me.Controls.Add(Me.cmdListado)
+        Me.Controls.Add(Me.txtIP)
+        Me.Controls.Add(Me.cmdConectar)
         Me.Controls.Add(Me.AxBIO_IP_RT2)
         Me.Name = "BIOIPRT"
         CType(Me.AxBIO_IP_RT2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents AxBIO_IP_RT2 As AxBIO_IP_RealTime.AxBIO_IP_RT
-    Friend WithEvents Button1 As Button
+    Friend WithEvents cmdConectar As Button
+    Friend WithEvents txtIP As TextBox
+    Friend WithEvents cmdListado As Button
+    Friend WithEvents cmdTest As Button
 
     'Friend WithEvents AxBIO_IP_RT1 As AxBIO_IP_RealTime.AxBIO_IP_RT
 End Class

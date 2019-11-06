@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{97D4F466-E5E7-467E-9558-73D115D6ACAA}</ProjectGuid>
+    <ProjectGuid>{F540600E-0669-43AE-B040-B5849B6AA1C5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ServiceApp.WinSocket</RootNamespace>
-    <AssemblyName>ServiceApp.WinSocket</AssemblyName>
+    <RootNamespace>ServiceApp.Interop</RootNamespace>
+    <AssemblyName>ServiceApp.Interop</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -18,9 +18,10 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\bin\</OutputPath>
-    <DocumentationFile>ServiceApp.WinSocket.xml</DocumentationFile>
+    <OutputPath>..\Bin\</OutputPath>
+    <DocumentationFile>ServiceApp.Interop.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,8 +29,9 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ServiceApp.WinSocket.xml</DocumentationFile>
+    <DocumentationFile>ServiceApp.Interop.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -65,10 +67,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmuladorCronos.vb" />
-    <Compile Include="EmuladorCronosFactory.vb" />
-    <Compile Include="WSInfoCliente.vb" />
-    <Compile Include="WSServer.vb" />
+    <Compile Include="BIOIPRTClass.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -117,21 +116,9 @@
       <Project>{672f1466-d114-4939-ad15-2cc9720fd7a7}</Project>
       <Name>ServiceApp.Definiciones</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Dummy\ServiceApp.Dummy.vbproj">
-      <Project>{cbb7e49f-6a35-4cad-b455-947edb7a7d0e}</Project>
-      <Name>ServiceApp.Dummy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ServiceApp.Interface\ServiceApp.Interface.vbproj">
       <Project>{e4598c31-ac9a-481f-bf93-b20de14f1dd1}</Project>
       <Name>ServiceApp.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceApp.Interop\ServiceApp.Interop.vbproj">
-      <Project>{f540600e-0669-43ae-b040-b5849b6aa1c5}</Project>
-      <Name>ServiceApp.Interop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ZKTeco\ServiceApp.ZKTeco.vbproj">
-      <Project>{84c88360-aeae-4fcf-9969-72e8c98a3192}</Project>
-      <Name>ServiceApp.ZKTeco</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

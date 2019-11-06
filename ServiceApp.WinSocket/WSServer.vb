@@ -3,6 +3,7 @@ Imports System.Net.Sockets
 Imports System.Net
 Imports ServiceApp.Logueos
 Imports ServiceApp.Definiciones
+Imports ServiceApp.BIOIPRT
 
 Public Class WSServer
 
@@ -16,6 +17,7 @@ Public Class WSServer
     Private _WSInfoCliente As New WSInfoCliente
     Private _IPRemoto As String
     Private _PuertoRemoto As Integer
+    Private _Form As BIOIPRT.BIOIPRT
 #End Region
 
 #Region "EVENTOS"
@@ -68,6 +70,15 @@ Public Class WSServer
         End Get
         Set(value As Integer)
             _PuertoRemoto = value
+        End Set
+    End Property
+
+    Public Property Form As BIOIPRT.BIOIPRT
+        Get
+            Return _Form
+        End Get
+        Set(value As BIOIPRT.BIOIPRT)
+            _Form = value
         End Set
     End Property
 #End Region
@@ -132,7 +143,7 @@ Public Class WSServer
             _Log.WriteLog("Se conecto un nuevo cliente.", TraceEventType.Information)
 
             _Log.WriteLog("Escucha Iniciada. Esperando Informacion", TraceEventType.Information)
-            Dim pEmuladorCronos As New EmuladorCronos(_Sistema, _IPRemoto, _PuertoRemoto)
+            Dim pEmuladorCronos As New EmuladorCronos(_Sistema, _IPRemoto, _PuertoRemoto, _Form)
             pEmuladorCronos.InfoDeUnCliente.Socket = _WSInfoCliente.Socket
             pEmuladorCronos.Start()
         Catch ex As Exception

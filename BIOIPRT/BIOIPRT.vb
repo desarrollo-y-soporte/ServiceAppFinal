@@ -1,29 +1,29 @@
-﻿
+﻿Imports System.ComponentModel
 Imports AxBIO_IP_RealTime
+Imports ServiceApp.BIOIPRT
 Imports ServiceApp.Interface
 Imports ServiceApp.Logueos
 
 Public Class BIOIPRT
     Implements IBackEnd
 
+    Private _Reloj As Integer
+    Private _IsConnected As Boolean
+    Private _Log As New Log
     Private _IP As String
     Private _Port As Integer
-    Private _Log As New Log
-    Private _IsConnected As Boolean
-    Private _Reloj As Integer
     Private _CantidadFichadas As Integer
     Private _Fecha As Date
-    Private _Hora As Date
-    Dim pFichadas As New List(Of String)
+
+    Public Event FichadaOnlineEvent As IBackEnd.FichadaOnlineEventEventHandler Implements IBackEnd.FichadaOnlineEvent
 
     Public Sub New()
 
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
-        Call AxBIO_IP_RT2.InicializarComponente(5, BIO_IP_RealTime.TipoVerificador.Módulo_11, BIO_IP_RealTime.TipoCriptografia.Normal)
-        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
 
-        pFichadas = Nothing
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Call AxBIO_IP_RT2.InicializarComponente(5, BIO_IP_RealTime.TipoVerificador.Módulo_11, BIO_IP_RealTime.TipoCriptografia.Normal)
         _Reloj = 1
     End Sub
 
@@ -33,7 +33,6 @@ Public Class BIOIPRT
         End Get
         Set(value As String)
             _IP = value
-            Call AxBIO_IP_RT2.AdicionaRelogio(_Reloj, _IP, 10, 0, 8, 0, 0, 0)
         End Set
     End Property
 
@@ -42,7 +41,6 @@ Public Class BIOIPRT
             Return _Port
         End Get
         Set(value As Integer)
-
             _Port = value
         End Set
     End Property
@@ -56,11 +54,27 @@ Public Class BIOIPRT
         End Set
     End Property
 
-    Public Event FichadaOnlineEvent As IBackEnd.FichadaOnlineEventEventHandler Implements IBackEnd.FichadaOnlineEvent
+    Public Property IsConnected As Boolean
+        Get
+            Return _IsConnected
+        End Get
+        Set(value As Boolean)
+            _IsConnected = value
+        End Set
+    End Property
+
+    Public Property Reloj As Integer
+        Get
+            Return _Reloj
+        End Get
+        Set(value As Integer)
+            _Reloj = value
+        End Set
+    End Property
 
     Public Sub CambioFechaHora(pFecha As Date) Implements IBackEnd.CambioFechaHora
         Try
-            AxBIO_IP_RT2.DataHora(_Reloj, pFecha)
+            'AxBIO_IP_RT2.DataHora(pBioiprtClass.Reloj, pFecha)
         Catch ex As Exception
             Throw New Exception(ex.Message)
         End Try
@@ -85,8 +99,9 @@ Public Class BIOIPRT
     Public Sub Conectar() Implements IBackEnd.Conectar
         Try
             Desconectar()
+
             Call AxBIO_IP_RT2.ConectarRelogios()
-            _IsConnected = True
+
             'Threading.Thread.Sleep(10000)
         Catch ex As Exception
             Throw New Exception(ex.Message)
@@ -108,21 +123,25 @@ Public Class BIOIPRT
 
     Private Sub AxBIO_IP_RT2_ConcluidoStatus(sender As Object, e As __BIO_IP_RT_ConcluidoStatusEvent) Handles AxBIO_IP_RT2.ConcluidoStatus
         _CantidadFichadas = e.quantidade_Registros
-        _Fecha = e.data
-        _Hora = e.hora
+        '_Fecha = e.data
+        '_Hora = e.hora
+        _Fecha = e.data.AddHours(e.hora.Hour).AddMinutes(e.hora.Minute).AddSeconds(e.hora.Second)
     End Sub
 
     Private Sub AxBIO_IP_RT2_Error(sender As Object, e As __BIO_IP_RT_ErrorEvent) Handles AxBIO_IP_RT2.[Error]
         _Log.WriteLog("Se produjo un error: " + e.descricao, TraceEventType.Information)
     End Sub
 
-    Public Function CantidadFichadas() As Integer Implements IBackEnd.CantidadFichadas
+    Public Sub Status()
         Call AxBIO_IP_RT2.Status(_Reloj)
-        Throw New NotImplementedException()
+    End Sub
+
+    Public Function CantidadFichadas() As Integer Implements IBackEnd.CantidadFichadas
+        Return _CantidadFichadas
     End Function
 
     Public Function FechaHoraUltInicializacion() As Date Implements IBackEnd.FechaHoraUltInicializacion
-        Throw New NotImplementedException()
+        Return _Fecha
     End Function
 
     Public Function Lectura() As String Implements IBackEnd.Lectura
@@ -133,14 +152,38 @@ Public Class BIOIPRT
         Throw New NotImplementedException()
     End Function
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Conectar()
+    Private Sub cmdConectar_Click(sender As Object, e As EventArgs) Handles cmdConectar.Click
+        If txtIP.Text <> "" Then
+            Conectar()
+        End If
     End Sub
 
     Private Sub AxBIO_IP_RT2_Conectado(sender As Object, e As __BIO_IP_RT_ConectadoEvent) Handles AxBIO_IP_RT2.Conectado
-        'Call AxBIO_IP_RT2.Status(_Reloj)
+        _IsConnected = True
+        Status()
     End Sub
 
+    Private Sub cmdListado_Click(sender As Object, e As EventArgs) Handles cmdListado.Click
+        'Call AxBIO_IP_RT2.Status(pBioiprtClass.Reloj)
+    End Sub
+
+    Private Sub BIOIPRT_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If _IsConnected Then
+            Desconectar()
+        End If
+    End Sub
+
+    Private Sub BIOIPRT_Load(sender As Object, e As EventArgs) Handles Me.Load
+        txtIP.Text = _IP
+
+        Call AxBIO_IP_RT2.AdicionaRelogio(_Reloj, _IP, 10, 0, 8, 0, 0, 0)
+        'AddHandler pBioIpRtClassInterop.ConectarEvent, New eve(AddressOf axCZKEM1_OnFinger)
+    End Sub
+
+    Private Sub cmdTest_Click(sender As Object, e As EventArgs) Handles cmdTest.Click
+        'MsgBox(pBioIpRtClassInterop.GetValor)
+        Status()
+    End Sub
 
 End Class
 

@@ -28,6 +28,14 @@ Public Class ServiceApp
                     _WinSocket(iKey).IPRemoto = pDatosOtrosSistemasMDL.IPRemota
                     _WinSocket(iKey).PuertoRemoto = pDatosOtrosSistemasMDL.PuertoRemoto
                     _WinSocket(iKey).Sistema = pDatosOtrosSistemasMDL.Sistema
+                    If _WinSocket(iKey).Sistema = Definiciones.BackendEnum.Dimmep Then
+                        Dim pForm As New BIOIPRT.BIOIPRT
+                        pForm.IP = _WinSocket(iKey).IPRemoto.ToString
+                        pForm.Show()
+                        _WinSocket(iKey).Form = pForm
+                    Else
+                        _WinSocket(iKey).Form = Nothing
+                    End If
                     _Log.WriteLog("Iniciando Escucha para - " + _WinSocket(iKey).IpAddressConnect.ToString + ":" + _WinSocket(iKey).Port.ToString, TraceEventType.Information)
                     _WinSocket(iKey).Escuchar()
                 Next
