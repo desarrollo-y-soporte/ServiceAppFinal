@@ -6,6 +6,7 @@ Imports ServiceApp.Definiciones
 Imports ServiceApp.BIOIPRT
 
 Public Class WSServer
+    Implements IDisposable
 
 #Region "VARIABLES"
     Private _TcpListener As TcpListener
@@ -18,6 +19,7 @@ Public Class WSServer
     Private _IPRemoto As String
     Private _PuertoRemoto As Integer
     Private _Form As BIOIPRT.BIOIPRT
+    Private _Identificador As Integer
 #End Region
 
 #Region "EVENTOS"
@@ -81,11 +83,21 @@ Public Class WSServer
             _Form = value
         End Set
     End Property
+
+    Public Property Identificador As Integer
+        Get
+            Return _Identificador
+        End Get
+        Set(value As Integer)
+            _Identificador = value
+        End Set
+    End Property
 #End Region
 
 #Region "METODOS"
     Public Sub Escuchar()
         Try
+            _TcpListener = Nothing
             _TcpListener = New TcpListener(_IpAddressConnect, _Port)
             'Inicio la escucha
             _TcpListener.Start()
@@ -97,6 +109,7 @@ Public Class WSServer
 
             _Thread.Start()
         Catch ex As Exception
+
             Throw New Exception("Error en WSServer.Escuchar - " + ex.Message.ToString)
         End Try
 
@@ -143,7 +156,7 @@ Public Class WSServer
             _Log.WriteLog("Se conecto un nuevo cliente.", TraceEventType.Information)
 
             _Log.WriteLog("Escucha Iniciada. Esperando Informacion", TraceEventType.Information)
-            Dim pEmuladorCronos As New EmuladorCronos(_Sistema, _IPRemoto, _PuertoRemoto, _Form)
+            Dim pEmuladorCronos As New EmuladorCronos(_Sistema, _IPRemoto, _PuertoRemoto, _Form, _Identificador)
             pEmuladorCronos.InfoDeUnCliente.Socket = _WSInfoCliente.Socket
             pEmuladorCronos.Start()
         Catch ex As Exception
@@ -151,6 +164,59 @@ Public Class WSServer
         End Try
 
     End Sub
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' Para detectar llamadas redundantes
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not disposedValue Then
+            If disposing Then
+                ' TODO: elimine el estado administrado (objetos administrados).
+
+                If _WSInfoCliente IsNot Nothing Then
+                    _WSInfoCliente.Dispose()
+                    _WSInfoCliente = Nothing
+                End If
+
+                If _Thread IsNot Nothing Then
+                    If _Thread.IsAlive() Then
+                        '_Thread.Abort()
+                        _Thread = Nothing
+                    End If
+                End If
+
+                If _TcpListener IsNot Nothing Then
+                    '_TcpListener.Stop()
+                    _TcpListener = Nothing
+                End If
+
+                If _Log IsNot Nothing Then
+                    _Log = Nothing
+                End If
+            End If
+
+            ' TODO: libere los recursos no administrados (objetos no administrados) y reemplace Finalize() a continuación.
+            ' TODO: configure los campos grandes en nulos.
+        End If
+        disposedValue = True
+    End Sub
+
+    ' TODO: reemplace Finalize() solo si el anterior Dispose(disposing As Boolean) tiene código para liberar recursos no administrados.
+    'Protected Overrides Sub Finalize()
+    '    ' No cambie este código. Coloque el código de limpieza en el anterior Dispose(disposing As Boolean).
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' Visual Basic agrega este código para implementar correctamente el patrón descartable.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' No cambie este código. Coloque el código de limpieza en el anterior Dispose(disposing As Boolean).
+        Dispose(True)
+        ' TODO: quite la marca de comentario de la siguiente línea si Finalize() se ha reemplazado antes.
+        ' GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 #End Region
 

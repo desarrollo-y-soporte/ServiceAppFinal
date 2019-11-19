@@ -14,6 +14,7 @@ Public Interface IBackEnd
 
     Property IP As String
     Property Port As Integer
+    Property Identificador As Integer
     Property Conectado As Boolean
 
     Function CantidadFichadas() As Integer

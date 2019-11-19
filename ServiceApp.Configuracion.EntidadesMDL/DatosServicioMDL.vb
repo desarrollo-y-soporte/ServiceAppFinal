@@ -7,6 +7,8 @@ Public Class DatosServicioMDL
     Private _IPRemota As String
     Private _PuertoRemoto As Integer
     Private _Sistema As Integer
+    Private _Identificador As Integer
+    Private _UltFechaBorrado As Date
 
 #Region "New and Finalize"
     Public Sub New()
@@ -16,6 +18,8 @@ Public Class DatosServicioMDL
         _IPRemota = ""
         _PuertoRemoto = -1
         _Sistema = BackendEnum.Ninguno
+        _Identificador = -1
+        _UltFechaBorrado = Date.Now
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -75,6 +79,24 @@ Public Class DatosServicioMDL
         End Get
         Set(value As Integer)
             _Sistema = value
+        End Set
+    End Property
+
+    Public Property Identificador As Integer
+        Get
+            Return _Identificador
+        End Get
+        Set(value As Integer)
+            _Identificador = value
+        End Set
+    End Property
+
+    Public Property UltFechaBorrado As Date
+        Get
+            Return _UltFechaBorrado
+        End Get
+        Set(value As Date)
+            _UltFechaBorrado = value
         End Set
     End Property
 #End Region

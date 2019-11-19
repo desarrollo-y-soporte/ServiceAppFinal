@@ -1,6 +1,7 @@
 ﻿Imports ServiceApp.Logueos
 Imports ServiceApp.Configuracion.Entidades
 Imports ServiceApp.Configuracion.EntidadesMDL
+Imports System.Windows.Forms
 
 Public Class ServiceApp
     Implements IDisposable
@@ -10,6 +11,7 @@ Public Class ServiceApp
     Private _Timer As System.Timers.Timer
     Private _Servicio As Servicio
     Private _DatosServicio As New Dictionary(Of Integer, DatosServicioMDL)
+    Private pForm As BIOIPRT.BIOIPRT
 
     Public Sub New()
         Try
@@ -28,11 +30,21 @@ Public Class ServiceApp
                     _WinSocket(iKey).IPRemoto = pDatosOtrosSistemasMDL.IPRemota
                     _WinSocket(iKey).PuertoRemoto = pDatosOtrosSistemasMDL.PuertoRemoto
                     _WinSocket(iKey).Sistema = pDatosOtrosSistemasMDL.Sistema
+                    _WinSocket(iKey).Identificador = pDatosOtrosSistemasMDL.Identificador
                     If _WinSocket(iKey).Sistema = Definiciones.BackendEnum.Dimmep Then
-                        Dim pForm As New BIOIPRT.BIOIPRT
+                        '_Log.WriteLog("Error en ServiceApp.New - Ingreso a Dimmep", TraceEventType.Information)
+                        pForm = New BIOIPRT.BIOIPRT
                         pForm.IP = _WinSocket(iKey).IPRemoto.ToString
+                        pForm.Port = _WinSocket(iKey).PuertoRemoto
+                        pForm.Identificador = _WinSocket(iKey).Identificador
+                        pForm.ModoManual = False
+                        pForm.EsVisible = False
+                        '_Log.WriteLog("Error en ServiceApp.New - Antes de Show", TraceEventType.Information)
                         pForm.Show()
+                        '_Log.WriteLog("Error en ServiceApp.New - Despues de Show", TraceEventType.Information)
+                        '_Log.WriteLog("Error en ServiceApp.New - Envio pForm", TraceEventType.Information)
                         _WinSocket(iKey).Form = pForm
+                        '_Log.WriteLog("Error en ServiceApp.New - Termino pForm", TraceEventType.Information)
                     Else
                         _WinSocket(iKey).Form = Nothing
                     End If
@@ -59,8 +71,18 @@ Public Class ServiceApp
         If Not disposedValue Then
             If disposing Then
                 ' TODO: elimine el estado administrado (objetos administrados).
-                _WinSocket(0) = Nothing
-                _Log = Nothing
+                If _WinSocket(0) IsNot Nothing Then
+                    _WinSocket(0).Dispose()
+                    _WinSocket(0) = Nothing
+                End If
+                If _Log IsNot Nothing Then
+                    _Log = Nothing
+                End If
+
+                If Not pForm Is Nothing Then
+                    pForm.Dispose()
+                    pForm.Close()
+                End If
             End If
 
             ' TODO: libere los recursos no administrados (objetos no administrados) y reemplace Finalize() a continuación.

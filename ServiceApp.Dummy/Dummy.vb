@@ -14,6 +14,7 @@ Public Class Dummy
     Private _Accion As BackendEnum
     Private _Mensaje As String
     Private _CantidadFichadas As Integer
+    Private _Identificador As Integer
 
     WithEvents _WSCliente As New WSCliente
     Public Event FichadaOnlineEvent As IBackEnd.FichadaOnlineEventEventHandler Implements IBackEnd.FichadaOnlineEvent
@@ -147,6 +148,15 @@ Public Class Dummy
         End Get
         Set(value As Boolean)
             _Conectado = value
+        End Set
+    End Property
+
+    Public Property Identificador As Integer Implements IBackEnd.Identificador
+        Get
+            Return _Identificador
+        End Get
+        Set(value As Integer)
+            _Identificador = value
         End Set
     End Property
 #End Region

@@ -27,7 +27,10 @@ Partial Class BIOIPRT
         Me.txtIP = New System.Windows.Forms.TextBox()
         Me.cmdListado = New System.Windows.Forms.Button()
         Me.AxBIO_IP_RT2 = New AxBIO_IP_RealTime.AxBIO_IP_RT()
-        Me.cmdTest = New System.Windows.Forms.Button()
+        Me.cmdAdicionar = New System.Windows.Forms.Button()
+        Me.lblArchivo = New System.Windows.Forms.Label()
+        Me.lblError = New System.Windows.Forms.Label()
+        Me.txtIdentificador = New System.Windows.Forms.TextBox()
         CType(Me.AxBIO_IP_RT2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -44,7 +47,7 @@ Partial Class BIOIPRT
         '
         Me.txtIP.Location = New System.Drawing.Point(68, 12)
         Me.txtIP.Name = "txtIP"
-        Me.txtIP.Size = New System.Drawing.Size(204, 20)
+        Me.txtIP.Size = New System.Drawing.Size(123, 20)
         Me.txtIP.TabIndex = 2
         '
         'cmdListado
@@ -65,19 +68,43 @@ Partial Class BIOIPRT
         Me.AxBIO_IP_RT2.Size = New System.Drawing.Size(32, 32)
         Me.AxBIO_IP_RT2.TabIndex = 0
         '
-        'cmdTest
+        'cmdAdicionar
         '
-        Me.cmdTest.Location = New System.Drawing.Point(116, 68)
-        Me.cmdTest.Name = "cmdTest"
-        Me.cmdTest.Size = New System.Drawing.Size(75, 23)
-        Me.cmdTest.TabIndex = 4
-        Me.cmdTest.Text = "Test"
-        Me.cmdTest.UseVisualStyleBackColor = True
+        Me.cmdAdicionar.Location = New System.Drawing.Point(116, 39)
+        Me.cmdAdicionar.Name = "cmdAdicionar"
+        Me.cmdAdicionar.Size = New System.Drawing.Size(75, 23)
+        Me.cmdAdicionar.TabIndex = 4
+        Me.cmdAdicionar.Text = "Adicionar"
+        Me.cmdAdicionar.UseVisualStyleBackColor = True
+        '
+        'lblArchivo
+        '
+        Me.lblArchivo.Location = New System.Drawing.Point(12, 122)
+        Me.lblArchivo.Name = "lblArchivo"
+        Me.lblArchivo.Size = New System.Drawing.Size(260, 16)
+        Me.lblArchivo.TabIndex = 7
+        '
+        'lblError
+        '
+        Me.lblError.Location = New System.Drawing.Point(7, 68)
+        Me.lblError.Name = "lblError"
+        Me.lblError.Size = New System.Drawing.Size(184, 42)
+        Me.lblError.TabIndex = 8
+        '
+        'txtIdentificador
+        '
+        Me.txtIdentificador.Location = New System.Drawing.Point(197, 12)
+        Me.txtIdentificador.Name = "txtIdentificador"
+        Me.txtIdentificador.Size = New System.Drawing.Size(75, 20)
+        Me.txtIdentificador.TabIndex = 9
         '
         'BIOIPRT
         '
-        Me.ClientSize = New System.Drawing.Size(284, 101)
-        Me.Controls.Add(Me.cmdTest)
+        Me.ClientSize = New System.Drawing.Size(284, 145)
+        Me.Controls.Add(Me.txtIdentificador)
+        Me.Controls.Add(Me.lblError)
+        Me.Controls.Add(Me.lblArchivo)
+        Me.Controls.Add(Me.cmdAdicionar)
         Me.Controls.Add(Me.cmdListado)
         Me.Controls.Add(Me.txtIP)
         Me.Controls.Add(Me.cmdConectar)
@@ -93,7 +120,10 @@ Partial Class BIOIPRT
     Friend WithEvents cmdConectar As Button
     Friend WithEvents txtIP As TextBox
     Friend WithEvents cmdListado As Button
-    Friend WithEvents cmdTest As Button
+    Friend WithEvents cmdAdicionar As Button
+    Friend WithEvents lblArchivo As Label
+    Friend WithEvents lblError As Label
+    Friend WithEvents txtIdentificador As TextBox
 
     'Friend WithEvents AxBIO_IP_RT1 As AxBIO_IP_RealTime.AxBIO_IP_RT
 End Class

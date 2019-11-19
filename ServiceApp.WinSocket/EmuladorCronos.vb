@@ -26,6 +26,7 @@ Public Class EmuladorCronos
     Private _FichadasEnMemoria As Integer
     Private _ModoLecturaFichadas As Boolean
     Private _ModoFinLecturaFichadas As Boolean
+    Private _Identificador As Integer
     Private _Form As BIOIPRT.BIOIPRT
 
 #End Region
@@ -35,8 +36,8 @@ Public Class EmuladorCronos
 #End Region
 
 #Region "Constantes"
-    Private Const ACK As Byte = &H6
-    Private Const NACK As Byte = &H5
+    Private ACK As Byte() = {&H6}
+    Private NACK As Byte() = {&H5}
 #End Region
 
 #Region "Declaracion Eventos"
@@ -54,12 +55,13 @@ Public Class EmuladorCronos
         _ModoFinLecturaFichadas = False
     End Sub
 
-    Public Sub New(ByVal pSistema As BackendEnum, ByVal pIP As String, ByVal pPort As Integer, ByVal pForm As BIOIPRT.BIOIPRT)
+    Public Sub New(ByVal pSistema As BackendEnum, ByVal pIP As String, ByVal pPort As Integer, ByVal pForm As BIOIPRT.BIOIPRT, ByVal pIdentificador As Integer)
         Me.New()
         _Sistema = pSistema
         _IPCliente = pIP
         _PortCliente = pPort
         _Form = pForm
+        _Identificador = pIdentificador
         Dim pEmuladorCronosFactory As EmuladorCronosFactory = New EmuladorCronosFactory()
         _IBackEnd = pEmuladorCronosFactory.CreateInstance(_Sistema, pForm)
         _Traductor = New Traductor(CInt(_Sistema))
@@ -119,6 +121,15 @@ Public Class EmuladorCronos
             _Form = value
         End Set
     End Property
+
+    Public Property Identificador As Integer
+        Get
+            Return _Identificador
+        End Get
+        Set(value As Integer)
+            _Identificador = value
+        End Set
+    End Property
 #End Region
 
 #Region "Metodos"
@@ -138,16 +149,19 @@ Public Class EmuladorCronos
                             If Ret > 0 Then
                                 Dim j As Integer
                                 j = -1
-                                For i = 0 To Ret
+                                For i = 0 To Ret - 1
 
                                     If _ModoLecturaFichadas Then
-                                        If Recibir(i) = ACK Then
+                                        If Recibir(i) = ACK(0) Then
                                             If _ModoLecturaFichadas Then
                                                 _Operacion = OperacionesEnum.Lectura
                                                 _InicioLectura = True
                                                 _FinLectura = True
                                             End If
-
+                                        Else
+                                            _ModoLecturaFichadas = False
+                                            _InicioLectura = False
+                                            _FinLectura = False
                                         End If
                                     End If
 
@@ -213,6 +227,9 @@ Public Class EmuladorCronos
                 'Cuando se recibe la conexion, guardo la informacion del cliente
                 'Guardo el Socket que utilizo para mantener la conexion con el cliente
                 .Thread = New Thread(AddressOf LeerSocket)
+                If _Sistema = BackendEnum.Dimmep Then
+                    .Thread.SetApartmentState(ApartmentState.STA)
+                End If
                 'Genero el evento Nueva conexion
                 RaiseEvent NuevaConexion()
                 'Inicio el thread encargado de escuchar los mensajes del cliente
@@ -249,12 +266,12 @@ Public Class EmuladorCronos
 
     Public Sub EnviarACK()
         _Log.WriteLog("Enviando ACK: ", TraceEventType.Information)
-        _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(ACK))
+        _WSInfoCliente.Socket.Send(ACK)
     End Sub
 
     Public Sub EnviarNACK()
         _Log.WriteLog("Enviando NACK: ", TraceEventType.Information)
-        _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(NACK))
+        _WSInfoCliente.Socket.Send(NACK)
     End Sub
 
     Public Sub Accion(ByVal pDato As String)
@@ -274,12 +291,16 @@ Public Class EmuladorCronos
                     CambioFechaHora(pDato)
                 Case OperacionesEnum.Borrado
                     _IBackEnd.Borrado()
+                    EnviarACK()
                 Case OperacionesEnum.InhabilitacionTotal
                     _IBackEnd.InhabilitacionTotal()
+                    EnviarACK()
                 Case OperacionesEnum.AltaTarjeta
                     _IBackEnd.AltaTarjeta(pDato)
+                    EnviarACK()
                 Case OperacionesEnum.BajaTarjeta
                     _IBackEnd.BajaTarjeta(pDato)
+                    EnviarACK()
                 Case OperacionesEnum.ACK
                     If _ModoLecturaFichadas Then
                         EnviarLectura()
@@ -292,6 +313,7 @@ Public Class EmuladorCronos
                     _Log.WriteLog("No se reconocio operacion a ejecutar.", TraceEventType.Information)
             End Select
         Catch ex As Exception
+            EnviarNACK()
             Throw New Exception("Error en EmuladorCronos.Accion - " + ex.Message.ToString)
         End Try
 
@@ -328,11 +350,10 @@ Public Class EmuladorCronos
         Try
             If _IBackEnd.PrepararLectura Then
                 EnviarACK()
+                _ModoLecturaFichadas = True
             Else
                 EnviarNACK()
             End If
-
-            _ModoLecturaFichadas = True
         Catch ex As Exception
             Throw New Exception("Error en EmuladorCronos.LecturaConfirmacion - " + ex.Message.ToString)
             EnviarNACK()
@@ -347,11 +368,12 @@ Public Class EmuladorCronos
             Dim pSplit() As String = pListaFichadas.Split(",")
             Dim pDiaHora As New Date(CInt(pSplit(0).Substring(0, 4)), CInt(pSplit(0).Substring(4, 2)), CInt(pSplit(0).Substring(6, 2)), CInt(pSplit(0).Substring(8, 2)), CInt(pSplit(0).Substring(10, 2)), 0)
             'Dim pDiaHora As Date = DateTime.ParseExact(pSplit(0), "yyyyMMddHHmmss", CultureInfo.InvariantCulture)
-            _IBackEnd_FichadaOnlineEvent(pDiaHora, pSplit(1), "E")
+
+            _IBackEnd_FichadaOnlineEvent(pDiaHora, pSplit(1), IIf(_Sistema = BackendEnum.ZKTeco, "E", pSplit(2)))
 
             _FichadasEnMemoria = _FichadasEnMemoria + 1
         Else
-            _ModoFinLecturaFichadas = True
+            _ModoFinLecturaFichadas = False
         End If
 
     End Sub
@@ -374,7 +396,7 @@ Public Class EmuladorCronos
             _ModoLecturaFichadas = False
             _IBackEnd.IP = _IPCliente
             _IBackEnd.Port = _PortCliente
-
+            _IBackEnd.Identificador = _Identificador
             If _IBackEnd.Conectado Then
                 _IBackEnd.Desconectar()
             End If
@@ -387,7 +409,10 @@ Public Class EmuladorCronos
     End Sub
 
     Private Sub EmuladorCronos_ConexionTerminada() Handles Me.ConexionTerminada
-
+        If _IBackEnd IsNot Nothing Then
+            _IBackEnd.Desconectar()
+            _IBackEnd = Nothing
+        End If
     End Sub
 
     Private Sub EmuladorCronos_DatosRecibidos() Handles Me.DatosRecibidos
@@ -418,7 +443,7 @@ Public Class EmuladorCronos
         Dim pMensaje(22) As Byte
 
         pMensaje(0) = 2
-        pMensaje(1) = 46
+        pMensaje(1) = 49
         'pasar parametro del IBackEnd
         ' zkteco siempre viene E
         Select Case pTpMovimiento
@@ -443,34 +468,6 @@ Public Class EmuladorCronos
         _WSInfoCliente.Socket.Send(pMensaje)
     End Sub
 
-    'Private Sub _EmuladorCronos_PedidoInicializacionEvent(pMensaje As String) Handles _EmuladorCronos.PedidoInicializacionEvent
-    '    Dim pSpliteo() As String
-    '    Dim pMensajeCronos As String
-    '    pSpliteo = pMensaje.Split(",")
-
-    '    pMensajeCronos = "B0"
-    '    pMensajeCronos = pMensajeCronos + pSpliteo(1) + pSpliteo(2)
-    '    'pMensajeCronos = pMensajeCronos + CalcularXOR(Encoding.ASCII.GetBytes(pMensajeCronos)).ToString
-    '    _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(pMensajeCronos))
-
-    'End Sub
-
-    'Private Sub _EmuladorCronos_LecturaFichadaEvent(pMensaje As String) Handles _EmuladorCronos.LecturaFichadaEvent
-    '    Dim pSpliteo() As String
-    '    Dim pMensajeCronos As String
-    '    pSpliteo = pMensaje.Split(",")
-
-    '    pMensajeCronos = ""
-    '    pMensajeCronos = pMensajeCronos + "02"
-    '    pMensajeCronos = pMensajeCronos + "52"
-    '    pMensajeCronos = pMensajeCronos + "30"
-    '    pMensajeCronos = pMensajeCronos + "00"
-    '    pMensajeCronos = pMensajeCronos + pSpliteo(1) + pSpliteo(2)
-    '    pMensajeCronos = pMensajeCronos + "02"
-    '    'pMensajeCronos = pMensajeCronos + CalcularXOR(Encoding.ASCII.GetBytes(pMensajeCronos)).ToString
-    '    _WSInfoCliente.Socket.Send(Encoding.ASCII.GetBytes(pMensajeCronos))
-    'End Sub
-
 #End Region
 
 #Region "IDisposable Support"
@@ -481,6 +478,16 @@ Public Class EmuladorCronos
         If Not disposedValue Then
             If disposing Then
                 ' TODO: elimine el estado administrado (objetos administrados).
+                If _WSInfoCliente IsNot Nothing Then
+                    _WSInfoCliente.Dispose()
+                    _WSInfoCliente = Nothing
+                End If
+
+                '_Log
+                If _Log IsNot Nothing Then
+                    _Log.Dispose()
+                    _Log = Nothing
+                End If
             End If
 
             ' TODO: libere los recursos no administrados (objetos no administrados) y reemplace Finalize() a continuación.

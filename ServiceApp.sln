@@ -47,6 +47,10 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceApp.Configuracion.En
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ServiceApp.Interop", "ServiceApp.Interop\ServiceApp.Interop.vbproj", "{F540600E-0669-43AE-B040-B5849B6AA1C5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeriveApp.Instalador", "SeriveApp.Instalador", "{2D2D1A54-2DBD-445D-835B-E5095FC6629E}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SeriveApp.Instalador", "Instalador\Instalador.vdproj", "{7CD43E91-9E46-4C9F-807E-20D7B5845DE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +117,9 @@ Global
 		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F540600E-0669-43AE-B040-B5849B6AA1C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CD43E91-9E46-4C9F-807E-20D7B5845DE8}.Debug|Any CPU.ActiveCfg = Debug
+		{7CD43E91-9E46-4C9F-807E-20D7B5845DE8}.Debug|Any CPU.Build.0 = Debug
+		{7CD43E91-9E46-4C9F-807E-20D7B5845DE8}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +140,7 @@ Global
 		{BA330932-BEF9-4E0C-9C8C-CD9B165A7248} = {59D4618B-102A-4EE3-B847-0D797ACDC268}
 		{F5DAE9AF-D984-497F-98A5-FFDB91FAF284} = {59D4618B-102A-4EE3-B847-0D797ACDC268}
 		{F540600E-0669-43AE-B040-B5849B6AA1C5} = {AC85F4C5-BD14-4861-AC79-7BB17CCE1096}
+		{7CD43E91-9E46-4C9F-807E-20D7B5845DE8} = {2D2D1A54-2DBD-445D-835B-E5095FC6629E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4F736B6-B36E-401C-AE8B-43E53CFCF8C5}

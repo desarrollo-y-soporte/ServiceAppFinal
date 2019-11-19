@@ -3,7 +3,7 @@ Imports zkemkeeper
 Imports ServiceApp.Logueos
 
 Public Class ZKTeco
-    Implements IBackEnd
+    Implements IBackEnd, IDisposable
 
     WithEvents axCZKEM1 As New CZKEMClass
 
@@ -13,6 +13,7 @@ Public Class ZKTeco
     Private _CommKey As Integer
     Private _Log As New Log
     Private idwErrorCode As Integer
+    Private _Identificador As Integer
 
     Public Sub New()
         _CommKey = 0
@@ -53,6 +54,15 @@ Public Class ZKTeco
         End Get
         Set(value As Boolean)
             _IsConnected = value
+        End Set
+    End Property
+
+    Public Property Identificador As Integer Implements IBackEnd.Identificador
+        Get
+            Return _Identificador
+        End Get
+        Set(value As Integer)
+            _Identificador = value
         End Set
     End Property
 
@@ -377,4 +387,39 @@ Public Class ZKTeco
         End If
         Return oReturn
     End Function
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' Para detectar llamadas redundantes
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not disposedValue Then
+            If disposing Then
+                ' TODO: elimine el estado administrado (objetos administrados).
+                If axCZKEM1 IsNot Nothing Then
+                    axCZKEM1 = Nothing
+                End If
+            End If
+
+            ' TODO: libere los recursos no administrados (objetos no administrados) y reemplace Finalize() a continuación.
+            ' TODO: configure los campos grandes en nulos.
+        End If
+        disposedValue = True
+    End Sub
+
+    ' TODO: reemplace Finalize() solo si el anterior Dispose(disposing As Boolean) tiene código para liberar recursos no administrados.
+    'Protected Overrides Sub Finalize()
+    '    ' No cambie este código. Coloque el código de limpieza en el anterior Dispose(disposing As Boolean).
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' Visual Basic agrega este código para implementar correctamente el patrón descartable.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' No cambie este código. Coloque el código de limpieza en el anterior Dispose(disposing As Boolean).
+        Dispose(True)
+        ' TODO: quite la marca de comentario de la siguiente línea si Finalize() se ha reemplazado antes.
+        ' GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 End Class

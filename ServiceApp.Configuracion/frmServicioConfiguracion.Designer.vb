@@ -42,6 +42,8 @@ Partial Class frmServicioConfiguracion
         Me.cmdQuitar = New System.Windows.Forms.Button()
         Me.cmdAgregar = New System.Windows.Forms.Button()
         Me.lvwOtrosSistemas = New System.Windows.Forms.ListView()
+        Me.txtIdentificador = New System.Windows.Forms.TextBox()
+        Me.lblIdentificador = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'txtIPServicio
@@ -65,7 +67,7 @@ Partial Class frmServicioConfiguracion
         Me.cmdBuscar.Location = New System.Drawing.Point(277, 367)
         Me.cmdBuscar.Name = "cmdBuscar"
         Me.cmdBuscar.Size = New System.Drawing.Size(75, 23)
-        Me.cmdBuscar.TabIndex = 7
+        Me.cmdBuscar.TabIndex = 8
         Me.cmdBuscar.Text = "Buscar"
         Me.cmdBuscar.UseVisualStyleBackColor = True
         '
@@ -74,7 +76,7 @@ Partial Class frmServicioConfiguracion
         Me.txtCarpetaLog.Location = New System.Drawing.Point(12, 369)
         Me.txtCarpetaLog.Name = "txtCarpetaLog"
         Me.txtCarpetaLog.Size = New System.Drawing.Size(259, 20)
-        Me.txtCarpetaLog.TabIndex = 6
+        Me.txtCarpetaLog.TabIndex = 7
         '
         'lblCarpetaLog
         '
@@ -124,7 +126,7 @@ Partial Class frmServicioConfiguracion
         Me.txtPuertoOtrosSistemas.Location = New System.Drawing.Point(148, 70)
         Me.txtPuertoOtrosSistemas.Name = "txtPuertoOtrosSistemas"
         Me.txtPuertoOtrosSistemas.Size = New System.Drawing.Size(100, 20)
-        Me.txtPuertoOtrosSistemas.TabIndex = 3
+        Me.txtPuertoOtrosSistemas.TabIndex = 4
         '
         'lblPuertoOtrosSistemas
         '
@@ -140,7 +142,7 @@ Partial Class frmServicioConfiguracion
         Me.txtIPOtrosSistemas.Location = New System.Drawing.Point(12, 71)
         Me.txtIPOtrosSistemas.Name = "txtIPOtrosSistemas"
         Me.txtIPOtrosSistemas.Size = New System.Drawing.Size(130, 20)
-        Me.txtIPOtrosSistemas.TabIndex = 2
+        Me.txtIPOtrosSistemas.TabIndex = 3
         '
         'lblIpOtrosSistemas
         '
@@ -158,7 +160,7 @@ Partial Class frmServicioConfiguracion
         Me.cboSistemas.Location = New System.Drawing.Point(254, 70)
         Me.cboSistemas.Name = "cboSistemas"
         Me.cboSistemas.Size = New System.Drawing.Size(159, 21)
-        Me.cboSistemas.TabIndex = 4
+        Me.cboSistemas.TabIndex = 5
         '
         'lblOrigen
         '
@@ -183,7 +185,7 @@ Partial Class frmServicioConfiguracion
         Me.cmdAgregar.Location = New System.Drawing.Point(419, 69)
         Me.cmdAgregar.Name = "cmdAgregar"
         Me.cmdAgregar.Size = New System.Drawing.Size(75, 23)
-        Me.cmdAgregar.TabIndex = 5
+        Me.cmdAgregar.TabIndex = 6
         Me.cmdAgregar.Text = "Agregar"
         Me.cmdAgregar.UseVisualStyleBackColor = True
         '
@@ -198,11 +200,29 @@ Partial Class frmServicioConfiguracion
         Me.lvwOtrosSistemas.UseCompatibleStateImageBehavior = False
         Me.lvwOtrosSistemas.View = System.Windows.Forms.View.Details
         '
+        'txtIdentificador
+        '
+        Me.txtIdentificador.Location = New System.Drawing.Point(251, 26)
+        Me.txtIdentificador.Name = "txtIdentificador"
+        Me.txtIdentificador.Size = New System.Drawing.Size(100, 20)
+        Me.txtIdentificador.TabIndex = 2
+        '
+        'lblIdentificador
+        '
+        Me.lblIdentificador.AutoSize = True
+        Me.lblIdentificador.Location = New System.Drawing.Point(251, 9)
+        Me.lblIdentificador.Name = "lblIdentificador"
+        Me.lblIdentificador.Size = New System.Drawing.Size(65, 13)
+        Me.lblIdentificador.TabIndex = 24
+        Me.lblIdentificador.Text = "Identificador"
+        '
         'frmServicioConfiguracion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(579, 433)
+        Me.Controls.Add(Me.txtIdentificador)
+        Me.Controls.Add(Me.lblIdentificador)
         Me.Controls.Add(Me.lvwOtrosSistemas)
         Me.Controls.Add(Me.cmdQuitar)
         Me.Controls.Add(Me.cmdAgregar)
@@ -252,4 +272,6 @@ Partial Class frmServicioConfiguracion
     Friend WithEvents cmdQuitar As Button
     Friend WithEvents cmdAgregar As Button
     Friend WithEvents lvwOtrosSistemas As ListView
+    Friend WithEvents txtIdentificador As TextBox
+    Friend WithEvents lblIdentificador As Label
 End Class

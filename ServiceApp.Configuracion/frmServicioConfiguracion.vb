@@ -35,7 +35,7 @@ Public Class frmServicioConfiguracion
         If _DatosServicio.Count > 0 Then
             For Each iKey As Integer In _DatosServicio.Keys
                 Dim pDatosOtrosSistemasMDL As DatosServicioMDL = _DatosServicio(iKey)
-                AgregarRegistro(pDatosOtrosSistemasMDL.IPServicio, pDatosOtrosSistemasMDL.PuertoServicio, pDatosOtrosSistemasMDL.IPRemota, pDatosOtrosSistemasMDL.PuertoRemoto, pDatosOtrosSistemasMDL.Sistema)
+                AgregarRegistro(pDatosOtrosSistemasMDL.IPServicio, pDatosOtrosSistemasMDL.PuertoServicio, pDatosOtrosSistemasMDL.IPRemota, pDatosOtrosSistemasMDL.PuertoRemoto, pDatosOtrosSistemasMDL.Sistema, pDatosOtrosSistemasMDL.Identificador)
             Next
         End If
     End Sub
@@ -66,9 +66,9 @@ Public Class frmServicioConfiguracion
         For Each item As ListViewItem In lvwOtrosSistemas.Items
             Try
                 '.IPServicio = _DataTable.Rows(iKey).Item("IPServicio").ToString, .PuertoServicio = CInt(_DataTable.Rows(iKey).Item("PuertoServicio").ToString), .IPRemota = _DataTable.Rows(iKey).Item("IPOtroSistema").ToString, .PuertoRemoto = CInt(_DataTable.Rows(iKey).Item("PuertoOtroSistema").ToString), .Sistema = CInt(_DataTable.Rows(iKey).Item("EquipoBackEnd").ToString), .CarpetaLog = _DataTable.Rows(iKey).Item("CarpetaLog").ToString
-                pDatosServicio.Add(iKey, New DatosServicioMDL With {.IPServicio = item.SubItems(0).Text, .PuertoServicio = CInt(item.SubItems(1).Text), .IPRemota = item.SubItems(2).Text, .PuertoRemoto = CInt(item.SubItems(3).Text), .Sistema = CInt(item.SubItems(4).Text)})
+                pDatosServicio.Add(iKey, New DatosServicioMDL With {.IPServicio = item.SubItems(0).Text, .PuertoServicio = CInt(item.SubItems(1).Text), .IPRemota = item.SubItems(2).Text, .PuertoRemoto = CInt(item.SubItems(3).Text), .Sistema = CInt(item.SubItems(4).Text), .Identificador = CInt(item.SubItems(5).Text)})
             Catch ex As Exception
-                pDatosServicio.Add(iKey, New DatosServicioMDL With {.IPServicio = String.Empty, .PuertoServicio = -1, .IPRemota = String.Empty, .PuertoRemoto = String.Empty, .Sistema = -1, .CarpetaLog = String.Empty})
+                pDatosServicio.Add(iKey, New DatosServicioMDL With {.IPServicio = String.Empty, .PuertoServicio = -1, .IPRemota = String.Empty, .PuertoRemoto = String.Empty, .Sistema = -1, .Identificador = -1, .CarpetaLog = String.Empty})
             End Try
             iKey = iKey + 1
         Next
@@ -87,6 +87,7 @@ Public Class frmServicioConfiguracion
         lvwOtrosSistemas.Columns.Add("IP Remota", 120, HorizontalAlignment.Right)
         lvwOtrosSistemas.Columns.Add("Puerto Remoto", 70, HorizontalAlignment.Right)
         lvwOtrosSistemas.Columns.Add("Sistema", 100, HorizontalAlignment.Left)
+        lvwOtrosSistemas.Columns.Add("Identificador", 70, HorizontalAlignment.Left)
         lvwOtrosSistemas.Items.Clear()
         txtIPOtrosSistemas.Text = ""
         txtPuertoOtrosSistemas.Text = ""
@@ -103,18 +104,19 @@ Public Class frmServicioConfiguracion
 
     Private Sub cmdAgregar_Click(sender As Object, e As EventArgs) Handles cmdAgregar.Click
         If (txtIPServicio.Text <> "" And txtPuertoServicio.Text <> "" And
-            txtIPOtrosSistemas.Text <> "" And txtPuertoOtrosSistemas.Text <> "") Then
-            AgregarRegistro(txtIPServicio.Text, CInt(txtPuertoServicio.Text), txtIPOtrosSistemas.Text, CInt(txtPuertoOtrosSistemas.Text), cboSistemas.SelectedValue)
+            txtIPOtrosSistemas.Text <> "" And txtPuertoOtrosSistemas.Text <> "" And txtIdentificador.Text <> "") Then
+            AgregarRegistro(txtIPServicio.Text, CInt(txtPuertoServicio.Text), txtIPOtrosSistemas.Text, CInt(txtPuertoOtrosSistemas.Text), cboSistemas.SelectedValue, CInt(txtIdentificador.Text))
         End If
     End Sub
 
-    Private Sub AgregarRegistro(ByVal pDireccionIP As String, ByVal pPuerto As Integer, ByVal pIPRemoto As String, ByVal pPuertoRemoto As Integer, ByVal pOrigen As String)
+    Private Sub AgregarRegistro(ByVal pDireccionIP As String, ByVal pPuerto As Integer, ByVal pIPRemoto As String, ByVal pPuertoRemoto As Integer, ByVal pOrigen As String, ByVal pIdentificador As Integer)
         Dim item As New ListViewItem()
         item.Text = pDireccionIP
         item.SubItems.Add(pPuerto)
         item.SubItems.Add(pIPRemoto)
         item.SubItems.Add(pPuertoRemoto)
         item.SubItems.Add(pOrigen)
+        item.SubItems.Add(pIdentificador)
         lvwOtrosSistemas.Items.Add(item)
     End Sub
 
